@@ -6,9 +6,7 @@ import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.propertyeditor.EnrollmentCourseCodeEditor;
 import net.therap.enrollmentmanagement.propertyeditor.EnrollmentUserNameEditor;
-import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
-import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,10 +46,12 @@ public class EnrollmentController extends HttpServlet {
 
         switch (Action.getAction(action)) {
             case SAVE:
-                save(enrollment, modelMap);
+                enrollmentService.save(enrollment);
+                showAll(modelMap);
                 break;
             case UPDATE:
-                update(enrollment, enrollmentId, modelMap);
+                enrollmentService.update(enrollment, enrollmentService.find(enrollmentId));
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -75,7 +75,8 @@ public class EnrollmentController extends HttpServlet {
                 showAll(modelMap);
                 break;
             case DELETE:
-                delete(enrollmentId, modelMap);
+                enrollmentService.delete(enrollmentId);
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -95,24 +96,5 @@ public class EnrollmentController extends HttpServlet {
             modelMap.addAttribute("enrollment", enrollmentService.find(enrollmentId));
             modelMap.addAttribute("enrollmentId", enrollmentId);
         }
-    }
-
-    public void save(Enrollment enrollment, ModelMap modelMap) {
-        enrollmentService.saveOrUpdate(enrollment);
-        showAll(modelMap);
-    }
-
-    public void update(Enrollment enrollment, long enrollmentId, ModelMap modelMap) {
-        Enrollment updatedEnrollment = enrollmentService.find(enrollmentId);
-        updatedEnrollment.setUser(enrollment.getUser());
-        updatedEnrollment.setCourse(enrollment.getCourse());
-
-        enrollmentService.saveOrUpdate(updatedEnrollment);
-        showAll(modelMap);
-    }
-
-    public void delete(long enrollmentId, ModelMap modelMap) {
-        enrollmentService.delete(enrollmentId);
-        showAll(modelMap);
     }
 }

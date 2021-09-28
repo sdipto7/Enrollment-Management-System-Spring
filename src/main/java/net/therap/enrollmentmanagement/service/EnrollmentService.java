@@ -25,7 +25,13 @@ public class EnrollmentService {
         return enrollmentDao.findAll();
     }
 
-    public void saveOrUpdate(Enrollment enrollment) {
+    public void save(Enrollment enrollment) {
+        enrollmentDao.saveOrUpdate(enrollment);
+    }
+
+    public void update(Enrollment enrollment, Enrollment updatedEnrollment) {
+        updatedEnrollment.setUser(enrollment.getUser());
+        updatedEnrollment.setCourse(enrollment.getCourse());
         enrollmentDao.saveOrUpdate(enrollment);
     }
 
