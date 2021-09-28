@@ -43,10 +43,12 @@ public class UserController extends HttpServlet {
 
         switch (Action.getAction(action)) {
             case SAVE:
-                save(user, modelMap);
+                userService.save(user);
+                showAll(modelMap);
                 break;
             case UPDATE:
-                update(user, userId, modelMap);
+                userService.update(user, userService.find(userId));
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -71,7 +73,8 @@ public class UserController extends HttpServlet {
                 showAll(modelMap);
                 break;
             case DELETE:
-                delete(userId, modelMap);
+                userService.delete(userId);
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -91,24 +94,5 @@ public class UserController extends HttpServlet {
             modelMap.addAttribute("user", userService.find(userId));
             modelMap.addAttribute("userId", userId);
         }
-    }
-
-    public void save(User user, ModelMap modelMap) {
-        userService.saveOrUpdate(user);
-        showAll(modelMap);
-    }
-
-    public void update(User user, long userId, ModelMap modelMap) {
-        User updatedUser = userService.find(userId);
-        updatedUser.setName(user.getName());
-        updatedUser.setRole(user.getRole());
-
-        userService.saveOrUpdate(updatedUser);
-        showAll(modelMap);
-    }
-
-    public void delete(long userId, ModelMap modelMap) {
-        userService.delete(userId);
-        showAll(modelMap);
     }
 }

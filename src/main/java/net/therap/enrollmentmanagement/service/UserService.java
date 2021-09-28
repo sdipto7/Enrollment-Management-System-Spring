@@ -34,7 +34,13 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public void saveOrUpdate(User user) {
+    public void save(User user) {
+        userDao.saveOrUpdate(user);
+    }
+
+    public void update(User user, User updatedUser) {
+        updatedUser.setName(user.getName());
+        updatedUser.setRole(user.getRole());
         userDao.saveOrUpdate(user);
     }
 
