@@ -32,7 +32,7 @@ public class EnrollmentService {
     public void update(Enrollment enrollment, Enrollment updatedEnrollment) {
         updatedEnrollment.setUser(enrollment.getUser());
         updatedEnrollment.setCourse(enrollment.getCourse());
-        enrollmentDao.saveOrUpdate(enrollment);
+        enrollmentDao.saveOrUpdate(updatedEnrollment);
     }
 
     public void delete(long id) {
