@@ -3,6 +3,7 @@ package net.therap.enrollmentmanagement.controller;
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,8 @@ import java.util.Objects;
 @Controller
 public class LoginController {
 
+    @Autowired
     private UserService userService;
-
-    public LoginController() {
-        userService = new UserService();
-    }
 
     @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
     public String login(@ModelAttribute Credential credential, HttpSession session) {

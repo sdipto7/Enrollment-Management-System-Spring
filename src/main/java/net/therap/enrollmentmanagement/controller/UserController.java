@@ -5,6 +5,7 @@ import net.therap.enrollmentmanagement.domain.Role;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.util.SessionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +22,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UserController extends HttpServlet {
 
+    @Autowired
     private UserService userService;
-
-    public UserController() {
-        userService = new UserService();
-    }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public String doPost(@RequestParam("name") String name,

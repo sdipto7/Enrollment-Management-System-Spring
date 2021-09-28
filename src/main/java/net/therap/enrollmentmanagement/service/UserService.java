@@ -3,6 +3,8 @@ package net.therap.enrollmentmanagement.service;
 import net.therap.enrollmentmanagement.dao.UserDao;
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,13 +12,11 @@ import java.util.List;
  * @author rumi.dipto
  * @since 8/25/21
  */
+@Component
 public class UserService {
 
+    @Autowired
     private UserDao userDao;
-
-    public UserService() {
-        userDao = new UserDao();
-    }
 
     public User find(long id) {
         return userDao.find(id);

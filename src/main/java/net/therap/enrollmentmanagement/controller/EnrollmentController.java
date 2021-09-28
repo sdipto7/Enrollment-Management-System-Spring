@@ -6,6 +6,7 @@ import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.util.SessionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,17 +23,14 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class EnrollmentController extends HttpServlet {
 
+    @Autowired
     private EnrollmentService enrollmentService;
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private CourseService courseService;
-
-    public EnrollmentController() {
-        enrollmentService = new EnrollmentService();
-        userService = new UserService();
-        courseService = new CourseService();
-    }
 
     @RequestMapping(value = "/enrollment", method = RequestMethod.POST)
     public String doPost(@RequestParam("name") String userName,

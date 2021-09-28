@@ -16,7 +16,6 @@
 <body>
     <table>
         <tr>
-            <th>Id</th>
             <th>Name</th>
             <c:if test="${currentUser.role == 'ADMIN'}">
                 <th>Role</th>
@@ -32,7 +31,6 @@
                 <c:param name="action" value="delete"/>
             </c:url>
             <tr>
-                <td><c:out value="${user.id}"/></td>
                 <td><c:out value="${user.name}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td><c:out value="${user.role}"/></td>
