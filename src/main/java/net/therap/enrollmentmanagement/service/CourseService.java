@@ -29,7 +29,13 @@ public class CourseService {
         return courseDao.findAll();
     }
 
-    public void saveOrUpdate(Course course) {
+    public void save(Course course) {
+        courseDao.saveOrUpdate(course);
+    }
+
+    public void update(Course course, Course updatedCourse) {
+        updatedCourse.setCourseCode(course.getCourseCode());
+        updatedCourse.setCourseTitle(course.getCourseTitle());
         courseDao.saveOrUpdate(course);
     }
 

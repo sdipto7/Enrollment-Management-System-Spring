@@ -37,10 +37,12 @@ public class CourseController {
 
         switch (Action.getAction(action)) {
             case SAVE:
-                save(course, modelMap);
+                courseService.save(course);
+                showAll(modelMap);
                 break;
             case UPDATE:
-                update(course, courseId, modelMap);
+                courseService.update(course, courseService.find(courseId));
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -65,7 +67,8 @@ public class CourseController {
                 showAll(modelMap);
                 break;
             case DELETE:
-                delete(courseId, modelMap);
+                courseService.delete(courseId);
+                showAll(modelMap);
                 break;
             default:
                 break;
@@ -85,24 +88,5 @@ public class CourseController {
             modelMap.addAttribute("course", courseService.find(courseId));
             modelMap.addAttribute("courseId", courseId);
         }
-    }
-
-    public void save(Course course, ModelMap modelMap) {
-        courseService.saveOrUpdate(course);
-        showAll(modelMap);
-    }
-
-    public void update(Course course, long courseId, ModelMap modelMap) {
-        Course updatedCourse = courseService.find(courseId);
-        updatedCourse.setCourseCode(course.getCourseCode());
-        updatedCourse.setCourseTitle(course.getCourseTitle());
-
-        courseService.saveOrUpdate(updatedCourse);
-        showAll(modelMap);
-    }
-
-    public void delete(long courseId, ModelMap modelMap) {
-        courseService.delete(courseId);
-        showAll(modelMap);
     }
 }
