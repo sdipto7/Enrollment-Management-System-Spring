@@ -1,7 +1,11 @@
 package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
+import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.domain.Enrollment;
+import net.therap.enrollmentmanagement.domain.User;
+import net.therap.enrollmentmanagement.propertyeditor.EnrollmentCourseCodeEditor;
+import net.therap.enrollmentmanagement.propertyeditor.EnrollmentUserNameEditor;
 import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.service.UserService;
@@ -9,9 +13,8 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
@@ -26,15 +29,14 @@ public class EnrollmentController extends HttpServlet {
     @Autowired
     private EnrollmentService enrollmentService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CourseService courseService;
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(User.class, "userName", new EnrollmentUserNameEditor());
+        binder.registerCustomEditor(Course.class, "courseCode", new EnrollmentCourseCodeEditor());
+    }
 
     @RequestMapping(value = "/enrollment", method = RequestMethod.POST)
-    public String doPost(@RequestParam("name") String userName,
-                         @RequestParam("courseCode") String courseCode,
+    public String doPost(@ModelAttribute Enrollment enrollment,
                          @RequestParam("action") String action,
                          @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
                          HttpSession session,
@@ -46,10 +48,10 @@ public class EnrollmentController extends HttpServlet {
 
         switch (Action.getAction(action)) {
             case SAVE:
-                save(userName, courseCode, modelMap);
+                save(enrollment, modelMap);
                 break;
             case UPDATE:
-                update(enrollmentId, userName, courseCode, modelMap);
+                update(enrollment, enrollmentId, modelMap);
                 break;
             default:
                 break;
@@ -95,19 +97,15 @@ public class EnrollmentController extends HttpServlet {
         }
     }
 
-    public void save(String userName, String courseCode, ModelMap modelMap) {
-        Enrollment enrollment = new Enrollment();
-        enrollment.setUser(userService.findByName(userName));
-        enrollment.setCourse(courseService.findByCourseCode(courseCode));
-
+    public void save(Enrollment enrollment, ModelMap modelMap) {
         enrollmentService.saveOrUpdate(enrollment);
         showAll(modelMap);
     }
 
-    public void update(long enrollmentId, String userName, String courseCode, ModelMap modelMap) {
+    public void update(Enrollment enrollment, long enrollmentId, ModelMap modelMap) {
         Enrollment updatedEnrollment = enrollmentService.find(enrollmentId);
-        updatedEnrollment.setUser(userService.findByName(userName));
-        updatedEnrollment.setCourse(courseService.findByCourseCode(courseCode));
+        updatedEnrollment.setUser(enrollment.getUser());
+        updatedEnrollment.setCourse(enrollment.getCourse());
 
         enrollmentService.saveOrUpdate(updatedEnrollment);
         showAll(modelMap);

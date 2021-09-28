@@ -17,7 +17,7 @@
     <form action="/enrollment" method="post">
         <input type="hidden" name="enrollmentId" value="${enrollmentId}"></input>
         <label for="UserName"> User's Name: </label>
-        <input id="UserName" type="text" name="name"></input><br><br>
+        <input id="UserName" type="text" name="userName"></input><br><br>
         <label for="CourseCode"> Course Code: </label>
         <input id="CourseCode" type="text" name="courseCode"></input><br><br>
         <input type="submit" name="action" value="${action}"></input><br><br>
