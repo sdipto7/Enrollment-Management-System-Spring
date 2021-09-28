@@ -41,7 +41,7 @@ public class UserService {
     public void update(User user, User updatedUser) {
         updatedUser.setName(user.getName());
         updatedUser.setRole(user.getRole());
-        userDao.saveOrUpdate(user);
+        userDao.saveOrUpdate(updatedUser);
     }
 
     public void delete(long id) {

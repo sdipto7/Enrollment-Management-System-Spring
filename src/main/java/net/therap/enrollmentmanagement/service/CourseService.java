@@ -36,7 +36,7 @@ public class CourseService {
     public void update(Course course, Course updatedCourse) {
         updatedCourse.setCourseCode(course.getCourseCode());
         updatedCourse.setCourseTitle(course.getCourseTitle());
-        courseDao.saveOrUpdate(course);
+        courseDao.saveOrUpdate(updatedCourse);
     }
 
     public void delete(long id) {
