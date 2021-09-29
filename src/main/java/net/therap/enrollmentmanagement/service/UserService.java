@@ -4,7 +4,7 @@ import net.therap.enrollmentmanagement.dao.UserDao;
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author rumi.dipto
  * @since 8/25/21
  */
-@Component
+@Service
 public class UserService {
 
     @Autowired

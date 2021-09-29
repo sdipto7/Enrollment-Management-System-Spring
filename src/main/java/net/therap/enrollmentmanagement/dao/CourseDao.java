@@ -2,7 +2,7 @@ package net.therap.enrollmentmanagement.dao;
 
 import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.util.EntityManagerSingleton;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author rumi.dipto
  * @since 8/25/21
  */
-@Component
+@Repository
 public class CourseDao {
 
     private EntityManager em;
