@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.PropertyEditorSupport;
+import java.util.Objects;
 
 /**
  * @author rumi.dipto
@@ -16,6 +17,8 @@ public class EnrollmentUserNameEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String userName) throws IllegalArgumentException {
-        setValue(userService.findByName(userName));
+        if (Objects.nonNull(userName)) {
+            setValue(userService.findByName(userName));
+        }
     }
 }

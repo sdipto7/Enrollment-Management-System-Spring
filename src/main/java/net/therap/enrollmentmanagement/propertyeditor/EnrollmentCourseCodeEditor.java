@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.PropertyEditorSupport;
+import java.util.Objects;
 
 /**
  * @author rumi.dipto
@@ -16,6 +17,8 @@ public class EnrollmentCourseCodeEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String courseCode) throws IllegalArgumentException {
-        setValue(courseService.findByCourseCode(courseCode));
+        if (Objects.nonNull(courseCode)) {
+            setValue(courseService.findByCourseCode(courseCode));
+        }
     }
 }
