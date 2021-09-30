@@ -30,7 +30,7 @@ dependencies {
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'javax.servlet:jstl:1.2'
     implementation group: 'org.springframework', name: 'spring-webmvc', version: '3.2.17.RELEASE'
-//    implementation group: 'org.springframework', name: 'spring-orm', version: '3.2.17.RELEASE'
+    implementation group: 'org.springframework', name: 'spring-orm', version: '3.2.17.RELEASE'
 
     def tomcatVersion = '9.0.1'
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
