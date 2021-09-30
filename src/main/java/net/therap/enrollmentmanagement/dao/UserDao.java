@@ -2,10 +2,11 @@ package net.therap.enrollmentmanagement.dao;
 
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.util.EntityManagerSingleton;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,11 +17,8 @@ import java.util.Objects;
 @Repository
 public class UserDao {
 
+    @PersistenceContext(unitName = "persistence-unit-1")
     private EntityManager em;
-
-    public UserDao() {
-        em = EntityManagerSingleton.getInstance().getEntityManager();
-    }
 
     public User find(long id) {
         return em.find(User.class, id);
@@ -43,28 +41,24 @@ public class UserDao {
         return em.createQuery("FROM User").getResultList();
     }
 
+    @Transactional
     public User saveOrUpdate(User user) {
-        em.getTransaction().begin();
-
         if (user.isNew()) {
             em.persist(user);
         } else {
             em.merge(user);
         }
         em.flush();
-        em.getTransaction().commit();
 
         return user;
     }
 
+    @Transactional
     public void delete(long id) {
         User user = em.getReference(User.class, id);
-
-        em.getTransaction().begin();
         if (Objects.nonNull(user)) {
             em.remove(user);
         }
         em.flush();
-        em.getTransaction().commit();
     }
 }

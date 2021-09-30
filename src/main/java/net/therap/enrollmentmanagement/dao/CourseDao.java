@@ -1,10 +1,11 @@
 package net.therap.enrollmentmanagement.dao;
 
 import net.therap.enrollmentmanagement.domain.Course;
-import net.therap.enrollmentmanagement.util.EntityManagerSingleton;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,11 +16,8 @@ import java.util.Objects;
 @Repository
 public class CourseDao {
 
+    @PersistenceContext(unitName = "persistence-unit-1")
     private EntityManager em;
-
-    public CourseDao() {
-        em = EntityManagerSingleton.getInstance().getEntityManager();
-    }
 
     public Course find(long id) {
         return em.find(Course.class, id);
@@ -36,30 +34,24 @@ public class CourseDao {
                 .getResultList();
     }
 
+    @Transactional
     public Course saveOrUpdate(Course course) {
-        em.getTransaction().begin();
-
         if (course.isNew()) {
-            System.out.println("NEW");
             em.persist(course);
         } else {
-            System.out.println("OLD");
             em.merge(course);
         }
         em.flush();
-        em.getTransaction().commit();
 
         return course;
     }
 
+    @Transactional
     public void delete(long id) {
         Course course = em.getReference(Course.class, id);
-
-        em.getTransaction().begin();
         if (Objects.nonNull(course)) {
             em.remove(course);
         }
         em.flush();
-        em.getTransaction().commit();
     }
 }

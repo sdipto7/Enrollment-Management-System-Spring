@@ -39,7 +39,7 @@ public class EnrollmentController {
                          @RequestParam("action") String action,
                          @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
                          HttpSession session,
-                         ModelMap modelMap) {
+                         ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
@@ -48,11 +48,11 @@ public class EnrollmentController {
         switch (Action.getAction(action)) {
             case SAVE:
                 enrollmentService.save(enrollment);
-                showAll(modelMap);
+                showAll(model);
                 break;
             case UPDATE:
                 enrollmentService.update(enrollment, enrollmentService.find(enrollmentId));
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -64,20 +64,20 @@ public class EnrollmentController {
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
                         HttpSession session,
-                        ModelMap modelMap) {
+                        ModelMap model) {
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(enrollmentId, modelMap);
+                edit(enrollmentId, model);
                 return "enrollment";
             case VIEW:
-                showAll(modelMap);
+                showAll(model);
                 break;
             case DELETE:
                 enrollmentService.delete(enrollmentId);
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -85,17 +85,17 @@ public class EnrollmentController {
         return "enrollmentList";
     }
 
-    public void showAll(ModelMap modelMap) {
-        modelMap.addAttribute("enrollmentList", enrollmentService.findAll());
+    public void showAll(ModelMap model) {
+        model.addAttribute("enrollmentList", enrollmentService.findAll());
     }
 
-    public void edit(long enrollmentId, ModelMap modelMap) {
+    public void edit(long enrollmentId, ModelMap model) {
         if (enrollmentId == 0) {
-            modelMap.addAttribute("action", "save");
+            model.addAttribute("action", "save");
         } else {
-            modelMap.addAttribute("action", "update");
-            modelMap.addAttribute("enrollment", enrollmentService.find(enrollmentId));
-            modelMap.addAttribute("enrollmentId", enrollmentId);
+            model.addAttribute("action", "update");
+            model.addAttribute("enrollment", enrollmentService.find(enrollmentId));
+            model.addAttribute("enrollmentId", enrollmentId);
         }
     }
 }

@@ -31,7 +31,7 @@ public class CourseController {
                          @RequestParam("action") String action,
                          @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
                          HttpSession session,
-                         ModelMap modelMap) {
+                         ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
@@ -40,11 +40,11 @@ public class CourseController {
         switch (Action.getAction(action)) {
             case SAVE:
                 courseService.save(course);
-                showAll(modelMap);
+                showAll(model);
                 break;
             case UPDATE:
                 courseService.update(course, courseService.find(courseId));
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -56,21 +56,21 @@ public class CourseController {
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
                         HttpSession session,
-                        ModelMap modelMap) {
+                        ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(courseId, modelMap);
+                edit(courseId, model);
                 return "course";
             case VIEW:
-                showAll(modelMap);
+                showAll(model);
                 break;
             case DELETE:
                 courseService.delete(courseId);
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -78,17 +78,17 @@ public class CourseController {
         return "courseList";
     }
 
-    public void showAll(ModelMap modelMap) {
-        modelMap.addAttribute("courseList", courseService.findAll());
+    public void showAll(ModelMap model) {
+        model.addAttribute("courseList", courseService.findAll());
     }
 
-    public void edit(long courseId, ModelMap modelMap) {
+    public void edit(long courseId, ModelMap model) {
         if (courseId == 0) {
-            modelMap.addAttribute("action", "save");
+            model.addAttribute("action", "save");
         } else {
-            modelMap.addAttribute("action", "update");
-            modelMap.addAttribute("course", courseService.find(courseId));
-            modelMap.addAttribute("courseId", courseId);
+            model.addAttribute("action", "update");
+            model.addAttribute("course", courseService.find(courseId));
+            model.addAttribute("courseId", courseId);
         }
     }
 }

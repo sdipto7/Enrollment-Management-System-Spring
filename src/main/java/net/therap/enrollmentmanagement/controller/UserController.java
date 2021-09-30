@@ -37,7 +37,7 @@ public class UserController extends HttpServlet {
                          @RequestParam("action") String action,
                          @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
                          HttpSession session,
-                         ModelMap modelMap) {
+                         ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
@@ -46,11 +46,11 @@ public class UserController extends HttpServlet {
         switch (Action.getAction(action)) {
             case SAVE:
                 userService.save(user);
-                showAll(modelMap);
+                showAll(model);
                 break;
             case UPDATE:
                 userService.update(user, userService.find(userId));
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -62,21 +62,21 @@ public class UserController extends HttpServlet {
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
                         HttpSession session,
-                        ModelMap modelMap) {
+                        ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(userId, modelMap);
+                edit(userId, model);
                 return "user";
             case VIEW:
-                showAll(modelMap);
+                showAll(model);
                 break;
             case DELETE:
                 userService.delete(userId);
-                showAll(modelMap);
+                showAll(model);
                 break;
             default:
                 break;
@@ -84,17 +84,17 @@ public class UserController extends HttpServlet {
         return "userList";
     }
 
-    public void showAll(ModelMap modelMap) {
-        modelMap.addAttribute("userList", userService.findAll());
+    public void showAll(ModelMap model) {
+        model.addAttribute("userList", userService.findAll());
     }
 
-    public void edit(long userId, ModelMap modelMap) {
+    public void edit(long userId, ModelMap model) {
         if (userId == 0) {
-            modelMap.addAttribute("action", "save");
+            model.addAttribute("action", "save");
         } else {
-            modelMap.addAttribute("action", "update");
-            modelMap.addAttribute("user", userService.find(userId));
-            modelMap.addAttribute("userId", userId);
+            model.addAttribute("action", "update");
+            model.addAttribute("user", userService.find(userId));
+            model.addAttribute("userId", userId);
         }
     }
 }
