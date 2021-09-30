@@ -14,15 +14,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * @author rumi.dipto
  * @since 9/10/21
  */
 @Controller
-public class EnrollmentController extends HttpServlet {
+@RequestMapping("/enrollment")
+public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -33,8 +34,8 @@ public class EnrollmentController extends HttpServlet {
         binder.registerCustomEditor(Course.class, "courseCode", new EnrollmentCourseCodeEditor());
     }
 
-    @RequestMapping(value = "/enrollment", method = RequestMethod.POST)
-    public String doPost(@ModelAttribute Enrollment enrollment,
+    @RequestMapping(method = RequestMethod.POST)
+    public String doPost(@Valid @ModelAttribute Enrollment enrollment,
                          @RequestParam("action") String action,
                          @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
                          HttpSession session,
@@ -59,7 +60,7 @@ public class EnrollmentController extends HttpServlet {
         return "enrollmentList";
     }
 
-    @RequestMapping(value = "/enrollment", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
                         HttpSession session,

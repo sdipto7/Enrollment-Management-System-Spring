@@ -1,6 +1,8 @@
 package net.therap.enrollmentmanagement.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,9 +17,13 @@ public class Course extends Persistent implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "course_code")
+    @NotNull
+    @Size(min = 2, max = 7)
     private String courseCode;
 
     @Column(name = "course_title")
+    @NotNull
+    @Size(min = 2, max = 100)
     private String courseTitle;
 
     @OneToMany(mappedBy = "course",

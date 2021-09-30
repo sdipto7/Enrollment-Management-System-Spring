@@ -13,19 +13,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * @author rumi.dipto
  * @since 9/9/21
  */
 @Controller
+@RequestMapping("/course")
 public class CourseController {
 
     @Autowired
     private CourseService courseService;
 
-    @RequestMapping(value = "/course", method = RequestMethod.POST)
-    public String doPost(@ModelAttribute Course course,
+    @RequestMapping(method = RequestMethod.POST)
+    public String doPost(@Valid @ModelAttribute Course course,
                          @RequestParam("action") String action,
                          @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
                          HttpSession session,
@@ -50,7 +52,7 @@ public class CourseController {
         return "courseList";
     }
 
-    @RequestMapping(value = "/course", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
                         HttpSession session,

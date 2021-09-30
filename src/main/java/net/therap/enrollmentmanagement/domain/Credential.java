@@ -1,6 +1,8 @@
 package net.therap.enrollmentmanagement.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -14,9 +16,13 @@ public class Credential extends Persistent implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "user_name")
+    @Size(min = 2, max = 100)
+    @NotNull
     private String userName;
 
     @Column(name = "password")
+    @Size(min = 2, max = 100)
+    @NotNull
     private String password;
 
     @OneToOne(cascade = CascadeType.REMOVE)

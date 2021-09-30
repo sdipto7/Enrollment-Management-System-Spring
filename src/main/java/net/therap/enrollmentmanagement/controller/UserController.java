@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * @author rumi.dipto
  * @since 9/10/21
  */
 @Controller
+@RequestMapping("/user")
 public class UserController extends HttpServlet {
 
     @Autowired
@@ -30,8 +32,8 @@ public class UserController extends HttpServlet {
         binder.registerCustomEditor(Role.class, "role", new UserRoleEditor());
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String doPost(@ModelAttribute User user,
+    @RequestMapping(method = RequestMethod.POST)
+    public String doPost(@Valid @ModelAttribute User user,
                          @RequestParam("action") String action,
                          @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
                          HttpSession session,
@@ -56,7 +58,7 @@ public class UserController extends HttpServlet {
         return "userList";
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String doGet(@RequestParam("action") String action,
                         @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
                         HttpSession session,

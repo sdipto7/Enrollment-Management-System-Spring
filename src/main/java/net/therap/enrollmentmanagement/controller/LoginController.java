@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,7 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
-    public String login(@ModelAttribute Credential credential, HttpSession session) {
+    public String login(@Valid @ModelAttribute Credential credential, HttpSession session) {
 
         User user = userService.findByCredential(credential);
 
