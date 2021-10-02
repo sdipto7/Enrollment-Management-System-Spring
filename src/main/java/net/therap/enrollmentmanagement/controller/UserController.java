@@ -34,8 +34,8 @@ public class UserController extends HttpServlet {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam("action") String action,
-                       @RequestParam(value = "userId", defaultValue = "0") long userId,
+    public String show(@RequestParam String action,
+                       @RequestParam(defaultValue = "0") long userId,
                        HttpSession session,
                        ModelMap model) {
 

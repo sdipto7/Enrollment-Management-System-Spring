@@ -36,8 +36,8 @@ public class EnrollmentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam("action") String action,
-                       @RequestParam(value = "enrollmentId", defaultValue = "0") long enrollmentId,
+    public String show(@RequestParam String action,
+                       @RequestParam(defaultValue = "0") long enrollmentId,
                        HttpSession session,
                        ModelMap model) {
         if (SessionUtil.checkInvalidLogin(session)) {

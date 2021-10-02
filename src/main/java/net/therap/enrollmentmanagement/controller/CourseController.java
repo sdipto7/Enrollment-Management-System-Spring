@@ -34,8 +34,8 @@ public class CourseController {
     private static final String LOGIN_PAGE = "login";
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam("action") String action,
-                       @RequestParam(value = "courseId", defaultValue = "0") long courseId,
+    public String show(@RequestParam String action,
+                       @RequestParam(defaultValue = "0") long courseId,
                        HttpSession session,
                        ModelMap model) {
 
