@@ -24,7 +24,8 @@ public class EnrollmentDao {
     }
 
     public List<Enrollment> findAll() {
-        return em.createQuery("FROM Enrollment").getResultList();
+        return em.createQuery("FROM Enrollment")
+                .getResultList();
     }
 
     @Transactional

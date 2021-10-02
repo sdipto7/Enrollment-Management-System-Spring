@@ -38,7 +38,8 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        return em.createQuery("FROM User").getResultList();
+        return em.createQuery("FROM User")
+                .getResultList();
     }
 
     @Transactional

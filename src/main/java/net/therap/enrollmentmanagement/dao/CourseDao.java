@@ -39,7 +39,7 @@ public class CourseDao {
         if (course.isNew()) {
             em.persist(course);
         } else {
-            em.merge(course);
+            course = em.merge(course);
         }
         em.flush();
 

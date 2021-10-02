@@ -1,4 +1,4 @@
-package net.therap.enrollmentmanagement.propertyeditor;
+package net.therap.enrollmentmanagement.editor;
 
 import net.therap.enrollmentmanagement.domain.Role;
 
@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author rumi.dipto
  * @since 9/28/21
  */
-public class UserRoleEditor extends PropertyEditorSupport {
+public class RoleEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String role) throws IllegalArgumentException {

@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.dao.CourseDao;
 import net.therap.enrollmentmanagement.domain.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
@@ -27,6 +28,16 @@ public class CourseService {
 
     public List<Course> findAll() {
         return courseDao.findAll();
+    }
+
+    public void getOrCreateCourse(long courseId, ModelMap model) {
+        if (courseId == 0) {
+            model.addAttribute("action", "save");
+            model.addAttribute("course", new Course());
+        } else {
+            model.addAttribute("action", "update");
+            model.addAttribute("course", find(courseId));
+        }
     }
 
     public void saveOrUpdate(Course course) {

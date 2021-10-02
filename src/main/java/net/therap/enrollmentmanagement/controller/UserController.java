@@ -3,7 +3,7 @@ package net.therap.enrollmentmanagement.controller;
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Role;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.propertyeditor.UserRoleEditor;
+import net.therap.enrollmentmanagement.editor.RoleEditor;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserController extends HttpServlet {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Role.class, "role", new UserRoleEditor());
+        binder.registerCustomEditor(Role.class, "role", new RoleEditor());
     }
 
     @RequestMapping(method = RequestMethod.POST)

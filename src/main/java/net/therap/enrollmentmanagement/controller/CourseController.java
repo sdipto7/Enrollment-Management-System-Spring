@@ -7,6 +7,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,47 +27,26 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String doPost(@Valid @ModelAttribute Course course,
-                         @RequestParam("action") String action,
-                         HttpSession session,
-                         ModelMap model) {
+    private static final String VIEW_PAGE = "courseList";
 
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
-        }
+    private static final String SAVE_PAGE = "course";
 
-        switch (Action.getAction(action)) {
-            case SAVE:
-                courseService.saveOrUpdate(course);
-                showAll(model);
-                break;
-            case UPDATE:
-                courseService.saveOrUpdate(course);
-                showAll(model);
-                break;
-            default:
-                break;
-        }
-        return "courseList";
-    }
+    private static final String LOGIN_PAGE = "login";
 
     @RequestMapping(method = RequestMethod.GET)
-    public String doGet(@RequestParam("action") String action,
-                        @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
-                        HttpSession session,
-                        ModelMap model) {
+    public String show(@RequestParam("action") String action,
+                       @RequestParam(value = "courseId", defaultValue = "0") long courseId,
+                       HttpSession session,
+                       ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
+            return LOGIN_PAGE;
         }
-
-        model.addAttribute("course", new Course());
 
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(courseId, model);
-                return "course";
+                courseService.getOrCreateCourse(courseId, model);
+                return SAVE_PAGE;
             case VIEW:
                 showAll(model);
                 break;
@@ -77,20 +57,31 @@ public class CourseController {
             default:
                 break;
         }
-        return "courseList";
+
+        return VIEW_PAGE;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Course course,
+                       HttpSession session,
+                       ModelMap model,
+                       BindingResult result) {
+
+        if (SessionUtil.checkInvalidLogin(session)) {
+            return LOGIN_PAGE;
+        }
+
+        if (result.hasErrors()) {
+            return VIEW_PAGE;
+        }
+
+        courseService.saveOrUpdate(course);
+        showAll(model);
+
+        return VIEW_PAGE;
     }
 
     public void showAll(ModelMap model) {
         model.addAttribute("courseList", courseService.findAll());
-    }
-
-    public void edit(long courseId, ModelMap model) {
-        if (courseId == 0) {
-            model.addAttribute("action", "save");
-        } else {
-            model.addAttribute("action", "update");
-            model.addAttribute("course", courseService.find(courseId));
-            model.addAttribute("courseId", courseId);
-        }
     }
 }

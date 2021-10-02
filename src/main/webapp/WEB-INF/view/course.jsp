@@ -19,9 +19,6 @@
                     <td>
                         <form:hidden path="id" />
                     </td>
-                    <td>
-                        <form:hidden path="created" />
-                    </td>
                 </tr>
             </c:if>
             <tr>

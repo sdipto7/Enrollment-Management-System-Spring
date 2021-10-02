@@ -30,7 +30,6 @@ public class User extends Persistent {
     private Credential credential;
 
     @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     private List<Enrollment> enrollmentList;
 

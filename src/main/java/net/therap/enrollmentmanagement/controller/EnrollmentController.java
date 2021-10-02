@@ -4,8 +4,8 @@ import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.propertyeditor.EnrollmentCourseCodeEditor;
-import net.therap.enrollmentmanagement.propertyeditor.EnrollmentUserNameEditor;
+import net.therap.enrollmentmanagement.editor.CourseEditor;
+import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class EnrollmentController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(User.class, "userName", new EnrollmentUserNameEditor());
-        binder.registerCustomEditor(Course.class, "courseCode", new EnrollmentCourseCodeEditor());
+        binder.registerCustomEditor(User.class, "userName", new UserEditor());
+        binder.registerCustomEditor(Course.class, "courseCode", new CourseEditor());
     }
 
     @RequestMapping(method = RequestMethod.POST)
