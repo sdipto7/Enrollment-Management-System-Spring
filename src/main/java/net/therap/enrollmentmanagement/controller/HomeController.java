@@ -4,7 +4,6 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpSession;
  * @since 9/9/21
  */
 @Controller
-public class HomeController extends HttpServlet {
+public class HomeController {
 
     @RequestMapping("/home")
     public String doGet(HttpSession session) {

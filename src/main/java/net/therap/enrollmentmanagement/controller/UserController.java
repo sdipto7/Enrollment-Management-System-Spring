@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -23,7 +22,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController extends HttpServlet {
+public class UserController {
 
     @Autowired
     private UserService userService;
