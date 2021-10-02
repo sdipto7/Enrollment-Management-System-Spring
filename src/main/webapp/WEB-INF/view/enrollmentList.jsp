@@ -9,7 +9,9 @@
     <title>Enrollments</title>
     <script type="text/javascript">
         function showAlert() {
-            if (!(confirm('Are you sure to delete the selected enrollment ?'))) return false;
+            if (!(confirm('Are you sure to delete the selected enrollment ?'))) {
+                return false;
+            }
         }
     </script>
 </head>
@@ -21,11 +23,11 @@
             <th>Course Title</th>
         </tr>
         <c:forEach var="enrollment" items="${enrollmentList}">
-            <c:url var="updateLink" value="/enrollment">
+            <c:url var="updateUrl" value="/enrollment">
                 <c:param name="action" value="edit"/>
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
-            <c:url var="deleteLink" value="/enrollment">
+            <c:url var="deleteUrl" value="/enrollment">
                 <c:param name="action" value="delete"/>
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
@@ -35,11 +37,9 @@
                 <td><c:out value="${enrollment.course.courseTitle}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td>
-                        <a href="${updateLink}"><c:out value="Edit"/></a>
+                        <a href="${updateUrl}"><c:out value="Edit"/></a>
                         |
-                        <a href="${deleteLink}"
-                           onclick="showAlert()">
-                            Delete</a>
+                        <a href="${deleteUrl}" onclick="showAlert()"> <c:out value="Delete"/></a>
                     </td>
                 </c:if>
             </tr>

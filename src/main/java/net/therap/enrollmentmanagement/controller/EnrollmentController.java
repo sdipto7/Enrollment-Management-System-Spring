@@ -11,6 +11,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,47 +31,21 @@ public class EnrollmentController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(User.class, "userName", new UserEditor());
-        binder.registerCustomEditor(Course.class, "courseCode", new CourseEditor());
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String doPost(@Valid @ModelAttribute Enrollment enrollment,
-                         @RequestParam("action") String action,
-                         @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
-                         HttpSession session,
-                         ModelMap model) {
-
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
-        }
-
-        switch (Action.getAction(action)) {
-            case SAVE:
-                enrollmentService.save(enrollment);
-                showAll(model);
-                break;
-            case UPDATE:
-                enrollmentService.update(enrollment, enrollmentService.find(enrollmentId));
-                showAll(model);
-                break;
-            default:
-                break;
-        }
-        return "enrollmentList";
+        binder.registerCustomEditor(User.class, "user", new UserEditor());
+        binder.registerCustomEditor(Course.class, "course", new CourseEditor());
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String doGet(@RequestParam("action") String action,
-                        @RequestParam(value = "enrollmentId", required = false, defaultValue = "0") long enrollmentId,
-                        HttpSession session,
-                        ModelMap model) {
+    public String show(@RequestParam("action") String action,
+                       @RequestParam(value = "enrollmentId", defaultValue = "0") long enrollmentId,
+                       HttpSession session,
+                       ModelMap model) {
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(enrollmentId, model);
+                enrollmentService.getOrCreateCourse(enrollmentId, model);
                 return "enrollment";
             case VIEW:
                 showAll(model);
@@ -85,17 +60,26 @@ public class EnrollmentController {
         return "enrollmentList";
     }
 
-    public void showAll(ModelMap model) {
-        model.addAttribute("enrollmentList", enrollmentService.findAll());
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Enrollment enrollment,
+                       HttpSession session,
+                       BindingResult result,
+                       ModelMap model) {
+
+        if (SessionUtil.checkInvalidLogin(session)) {
+            return "login";
+        }
+
+        if (result.hasErrors()) {
+            return "enrollmentList";
+        }
+        enrollmentService.saveOrUpdate(enrollment);
+        showAll(model);
+
+        return "enrollmentList";
     }
 
-    public void edit(long enrollmentId, ModelMap model) {
-        if (enrollmentId == 0) {
-            model.addAttribute("action", "save");
-        } else {
-            model.addAttribute("action", "update");
-            model.addAttribute("enrollment", enrollmentService.find(enrollmentId));
-            model.addAttribute("enrollmentId", enrollmentId);
-        }
+    public void showAll(ModelMap model) {
+        model.addAttribute("enrollmentList", enrollmentService.findAll());
     }
 }

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -9,7 +11,7 @@
     <title>Admin Home</title>
 </head>
 <body>
-    <h1><c:out value="WELCOME ${currentUser.name}"/></h1><br>
+    <h2><spring:message code="page.header"/> </h2>
 
     <c:url var="courseViewLink" value="/course">
         <c:param name="action" value="view"/>

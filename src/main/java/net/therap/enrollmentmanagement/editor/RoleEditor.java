@@ -12,7 +12,7 @@ import java.util.Objects;
 public class RoleEditor extends PropertyEditorSupport {
 
     @Override
-    public void setAsText(String role) throws IllegalArgumentException {
+    public void setAsText(String role) {
         if (Objects.nonNull(role)) {
             setValue(Role.valueOf(role.toUpperCase()));
         }

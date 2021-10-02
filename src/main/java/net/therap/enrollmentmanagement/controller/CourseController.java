@@ -64,8 +64,8 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String save(@Valid @ModelAttribute Course course,
                        HttpSession session,
-                       ModelMap model,
-                       BindingResult result) {
+                       BindingResult result,
+                       ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return LOGIN_PAGE;
@@ -74,7 +74,6 @@ public class CourseController {
         if (result.hasErrors()) {
             return VIEW_PAGE;
         }
-
         courseService.saveOrUpdate(course);
         showAll(model);
 

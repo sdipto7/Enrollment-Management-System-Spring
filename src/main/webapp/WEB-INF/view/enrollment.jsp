@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page session="false" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -9,20 +12,42 @@
     <title>Edit Enrollment</title>
 </head>
 <body>
-    <c:if test="${action == 'update'}">
-        <c:out value="User Name: ${enrollment.user.name}"/><br>
-        <c:out value="Course Code: ${enrollment.course.courseCode}"/><br><br><br>
-        <label>Update Information:</label><br><br>
-    </c:if>
-    <form action="/enrollment" method="post">
-        <input type="hidden" name="enrollmentId" value="${enrollmentId}"></input>
-        <label for="UserName"> User's Name: </label>
-        <input id="UserName" type="text" name="userName"></input><br><br>
-        <label for="CourseCode"> Course Code: </label>
-        <input id="CourseCode" type="text" name="courseCode"></input><br><br>
-        <input type="submit" name="action" value="${action}"></input><br><br>
-    </form>
-
+    <form:form action="/enrollment" commandName="enrollment">
+        <table>
+            <c:if test="${action == 'update'}">
+                <tr>
+                    <td>
+                        <form:hidden path="id" />
+                    </td>
+                </tr>
+            </c:if>
+            <tr>
+                <td>
+                    <form:label path="user">
+                        <spring:message text="User's name"/>
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="user" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:label path="course">
+                        <spring:message text="Course Code"/>
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="course" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="action" value="<spring:message text="${action}"/>" />
+                </td>
+            </tr>
+        </table>
+    </form:form>
     <c:url var="logoutLink" value="/logout"/>
     <a href="${logoutLink}"><c:out value="Logout"/></a>
 </body>

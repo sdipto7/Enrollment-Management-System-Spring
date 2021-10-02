@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page session="false" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -9,23 +12,55 @@
     <title>Edit User</title>
 </head>
 <body>
-    <c:if test="${action == 'update'}">
-        <c:out value="Name: ${user.name}"/><br>
-        <c:out value="Role: ${user.role}"/><br><br><br>
-        <label>Update Information:</label><br><br>
-    </c:if>
-    <form action="/user" method="post">
-        <input type="hidden" name="userId" value="${userId}"></input>
-        <label for="Name"> Name: </label>
-        <input id="Name" type="text" name="name"></input><br><br>
-        <label> Role: </label><br>
-        <label for="Admin"> ADMIN</label>
-        <input id="Admin" type="radio" name="role" value="admin"></input><br>
-        <label for="User"> USER</label>
-        <input id="User" type="radio" name="role" value="user"></input><br><br>
-        <input type="submit" name="action" value="${action}"></input><br><br>
-    </form>
-
+    <form:form action="/user" commandName="user">
+        <table>
+            <c:if test="${action == 'update'}">
+                <tr>
+                    <td>
+                        <form:hidden path="id" />
+                    </td>
+                </tr>
+            </c:if>
+            <tr>
+                <td>
+                    <form:label path="name">
+                        <spring:message text="Name"/>
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="name" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:label path="role">
+                        <spring:message text="Role"/>
+                    </form:label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:label path="role">
+                        <spring:message text="Admin"/>
+                    </form:label>
+                    <form:radiobutton path="role" value="Admin"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:label path="role">
+                        <spring:message text="User"/>
+                    </form:label>
+                    <form:radiobutton path="role" value="User"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="action" value="<spring:message text="${action}"/>" />
+                </td>
+            </tr>
+        </table>
+    </form:form>
     <c:url var="logoutLink" value="/logout"/>
     <a href="${logoutLink}"><c:out value="Logout"/></a>
 </body>

@@ -20,7 +20,7 @@
             <th>Course Title</th>
         </tr>
         <c:forEach var="course" items="${courseList}">
-            <c:url var="updateLink" value="/course">
+            <c:url var="updateUrl" value="/course">
                 <c:param name="courseId" value="${course.id}"/>
                 <c:param name="action" value="edit"/>
             </c:url>
@@ -33,11 +33,9 @@
                 <td><c:out value="${course.courseTitle}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td>
-                        <a href="${updateLink}"><c:out value="Edit"/></a>
+                        <a href="${updateUrl}"><c:out value="Edit"/></a>
                         |
-                        <a href="${deleteLink}"
-                           onclick="showAlert()">
-                            <c:out value="Delete"/></a>
+                        <a href="${deleteLink}" onclick="showAlert()"><c:out value="Delete"/></a>
                     </td>
                 </c:if>
             </tr>

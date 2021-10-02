@@ -9,7 +9,9 @@
     <title>Users</title>
     <script type="text/javascript">
         function showAlert() {
-            if (!(confirm('Are you sure to delete the selected user ?'))) return false;
+            if (!(confirm('Are you sure to delete the selected user ?'))) {
+                return false;
+            }
         }
     </script>
 </head>
@@ -37,9 +39,7 @@
                     <td>
                         <a href="${updateLink}"><c:out value="Edit"/></a>
                         |
-                        <a href="${deleteLink}"
-                           onclick="showAlert()">
-                            Delete</a>
+                        <a href="${deleteLink}" onclick="showAlert()"> <c:out value="Delete"/></a>
                     </td>
                 </c:if>
             </tr>

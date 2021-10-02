@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.dao.EnrollmentDao;
 import net.therap.enrollmentmanagement.domain.Enrollment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
@@ -25,14 +26,18 @@ public class EnrollmentService {
         return enrollmentDao.findAll();
     }
 
-    public void save(Enrollment enrollment) {
-        enrollmentDao.saveOrUpdate(enrollment);
+    public void getOrCreateCourse(long enrollmentId, ModelMap model) {
+        if (enrollmentId == 0) {
+            model.addAttribute("action", "save");
+            model.addAttribute("course", new Enrollment());
+        } else {
+            model.addAttribute("action", "update");
+            model.addAttribute("enrollment", find(enrollmentId));
+        }
     }
 
-    public void update(Enrollment enrollment, Enrollment updatedEnrollment) {
-        updatedEnrollment.setUser(enrollment.getUser());
-        updatedEnrollment.setCourse(enrollment.getCourse());
-        enrollmentDao.saveOrUpdate(updatedEnrollment);
+    public void saveOrUpdate(Enrollment enrollment) {
+        enrollmentDao.saveOrUpdate(enrollment);
     }
 
     public void delete(long id) {

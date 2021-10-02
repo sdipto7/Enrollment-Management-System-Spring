@@ -9,6 +9,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,44 +33,18 @@ public class UserController extends HttpServlet {
         binder.registerCustomEditor(Role.class, "role", new RoleEditor());
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String doPost(@Valid @ModelAttribute User user,
-                         @RequestParam("action") String action,
-                         @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
-                         HttpSession session,
-                         ModelMap model) {
-
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
-        }
-
-        switch (Action.getAction(action)) {
-            case SAVE:
-                userService.save(user);
-                showAll(model);
-                break;
-            case UPDATE:
-                userService.update(user, userService.find(userId));
-                showAll(model);
-                break;
-            default:
-                break;
-        }
-        return "userList";
-    }
-
     @RequestMapping(method = RequestMethod.GET)
-    public String doGet(@RequestParam("action") String action,
-                        @RequestParam(value = "userId", required = false, defaultValue = "0") long userId,
-                        HttpSession session,
-                        ModelMap model) {
+    public String show(@RequestParam("action") String action,
+                       @RequestParam(value = "userId", defaultValue = "0") long userId,
+                       HttpSession session,
+                       ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                edit(userId, model);
+                userService.getOrCreateUser(userId, model);
                 return "user";
             case VIEW:
                 showAll(model);
@@ -84,17 +59,26 @@ public class UserController extends HttpServlet {
         return "userList";
     }
 
-    public void showAll(ModelMap model) {
-        model.addAttribute("userList", userService.findAll());
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute User user,
+                       HttpSession session,
+                       BindingResult result,
+                       ModelMap model) {
+
+        if (SessionUtil.checkInvalidLogin(session)) {
+            return "login";
+        }
+
+        if (result.hasErrors()) {
+            return "userList";
+        }
+        userService.saveOrUpdate(user);
+        showAll(model);
+
+        return "userList";
     }
 
-    public void edit(long userId, ModelMap model) {
-        if (userId == 0) {
-            model.addAttribute("action", "save");
-        } else {
-            model.addAttribute("action", "update");
-            model.addAttribute("user", userService.find(userId));
-            model.addAttribute("userId", userId);
-        }
+    public void showAll(ModelMap model) {
+        model.addAttribute("userList", userService.findAll());
     }
 }
