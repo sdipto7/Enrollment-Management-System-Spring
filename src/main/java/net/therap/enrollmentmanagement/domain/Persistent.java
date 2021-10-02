@@ -1,6 +1,7 @@
 package net.therap.enrollmentmanagement.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @since 9/14/21
  */
 @MappedSuperclass
-public class Persistent {
+public class Persistent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

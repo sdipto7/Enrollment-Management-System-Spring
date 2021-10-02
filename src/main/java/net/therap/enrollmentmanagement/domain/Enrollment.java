@@ -5,7 +5,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * @author rumi.dipto
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "enrollment")
-public class Enrollment extends Persistent implements Comparable<Enrollment>, Serializable {
+public class Enrollment extends Persistent implements Comparable<Enrollment> {
 
     private static final long serialVersionUID = 1L;
 

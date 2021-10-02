@@ -5,6 +5,7 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +25,8 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
-    public String login(@Valid @ModelAttribute Credential credential, HttpSession session) {
-
+    public String login(@Valid @ModelAttribute("credential") Credential credential, HttpSession session) {
         User user = userService.findByCredential(credential);
-
         if (Objects.nonNull(user)) {
             session.setAttribute("currentUser", user);
             return "home";
@@ -36,8 +35,10 @@ public class LoginController {
         }
     }
 
-    @RequestMapping("/")
-    public String loginPage() {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String viewLoginPage(ModelMap model) {
+        model.addAttribute("credential", new Credential());
+
         return "login";
     }
 }

@@ -29,7 +29,6 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String doPost(@Valid @ModelAttribute Course course,
                          @RequestParam("action") String action,
-                         @RequestParam(value = "courseId", required = false, defaultValue = "0") long courseId,
                          HttpSession session,
                          ModelMap model) {
 
@@ -39,11 +38,11 @@ public class CourseController {
 
         switch (Action.getAction(action)) {
             case SAVE:
-                courseService.save(course);
+                courseService.saveOrUpdate(course);
                 showAll(model);
                 break;
             case UPDATE:
-                courseService.update(course, courseService.find(courseId));
+                courseService.saveOrUpdate(course);
                 showAll(model);
                 break;
             default:
@@ -61,6 +60,9 @@ public class CourseController {
         if (SessionUtil.checkInvalidLogin(session)) {
             return "login";
         }
+
+        model.addAttribute("course", new Course());
+
         switch (Action.getAction(action)) {
             case EDIT:
                 edit(courseId, model);

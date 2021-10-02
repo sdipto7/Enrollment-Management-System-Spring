@@ -3,7 +3,6 @@ package net.therap.enrollmentmanagement.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 /**
  * @author rumi.dipto
@@ -11,7 +10,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "credential")
-public class Credential extends Persistent implements Serializable {
+public class Credential extends Persistent {
 
     private static final long serialVersionUID = 1L;
 
