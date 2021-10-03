@@ -17,13 +17,13 @@ public class User extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    @NotNull
-    @Size(min = 2, max = 100)
+    @NotNull(message = "Name cannot be null")
+    @Size(min = 2, max = 100, message = "Length of name must be between {min} to {max}")
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @NotNull
+    @NotNull(message = "You must select a role for the user")
     private Role role;
 
     @OneToOne(mappedBy = "user")

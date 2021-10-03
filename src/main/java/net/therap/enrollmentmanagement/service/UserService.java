@@ -1,12 +1,10 @@
 package net.therap.enrollmentmanagement.service;
 
 import net.therap.enrollmentmanagement.dao.UserDao;
-import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
@@ -36,14 +34,8 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public void getOrCreateUser(long userId, ModelMap model) {
-        if (userId == 0) {
-            model.addAttribute("action", "save");
-            model.addAttribute("user", new User());
-        } else {
-            model.addAttribute("action", "update");
-            model.addAttribute("user", find(userId));
-        }
+    public User getOrCreateUser(long userId) {
+        return userId == 0 ? new User() : find(userId);
     }
 
     public void saveOrUpdate(User user) {

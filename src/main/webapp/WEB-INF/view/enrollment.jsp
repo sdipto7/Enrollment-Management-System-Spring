@@ -9,12 +9,12 @@
 --%>
 <html>
 <head>
-    <title>Edit Enrollment</title>
+    <title><spring:message code="enrollment.title"/></title>
 </head>
 <body>
-    <form:form action="/enrollment" commandName="enrollment">
+    <form:form action="/enrollment" modelAttribute="enrollment">
         <table>
-            <c:if test="${action == 'update'}">
+            <c:if test="${id != 0}">
                 <tr>
                     <td>
                         <form:hidden path="id" />
@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" name="action" value="<spring:message text="${action}"/>" />
+                    <input type="submit" name="action" value="<spring:message text="Save"/>" />
                 </td>
             </tr>
         </table>

@@ -9,12 +9,12 @@
 --%>
 <html>
 <head>
-    <title>Edit User</title>
+    <title><spring:message code="user.title"/></title>
 </head>
 <body>
-    <form:form action="/user" commandName="user">
+    <form:form action="/user" modelAttribute="user">
         <table>
-            <c:if test="${action == 'update'}">
+            <c:if test="${id != 0}">
                 <tr>
                     <td>
                         <form:hidden path="id" />
@@ -31,6 +31,7 @@
                     <form:input path="name" />
                 </td>
             </tr>
+            <form:errors path="name"/>
             <tr>
                 <td>
                     <form:label path="role">
@@ -54,9 +55,10 @@
                     <form:radiobutton path="role" value="User"/>
                 </td>
             </tr>
+            <form:errors path="role"/>
             <tr>
                 <td colspan="2">
-                    <input type="submit" name="action" value="<spring:message text="${action}"/>" />
+                    <input type="submit" name="action" value="<spring:message text="Save"/>" />
                 </td>
             </tr>
         </table>

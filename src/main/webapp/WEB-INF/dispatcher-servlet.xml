@@ -34,8 +34,8 @@
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename" value="/WEB-INF/messages.properties"/>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/messages"/>
     </bean>
 
     <mvc:interceptors>

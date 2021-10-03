@@ -8,11 +8,10 @@
 --%>
 <html>
 <head>
-    <title>Admin Home</title>
+    <title><spring:message code="home.title"/></title>
 </head>
 <body>
-    <h2><spring:message code="page.header"/> </h2>
-
+    <h2><spring:message code="home.header"/> </h2>
     <c:url var="courseViewLink" value="/course">
         <c:param name="action" value="view"/>
     </c:url>

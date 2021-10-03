@@ -11,7 +11,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +29,16 @@ public class EnrollmentController {
     @Autowired
     private EnrollmentService enrollmentService;
 
+    private static final String VIEW_PAGE = "enrollmentList";
+
+    private static final String SAVE_PAGE = "enrollment";
+
+    private static final String LOGIN_PAGE = "login";
+
+    private static final String DONE_PAGE = "success";
+
+    private Enrollment enrollment;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(User.class, "user", new UserEditor());
@@ -41,45 +51,47 @@ public class EnrollmentController {
                        HttpSession session,
                        ModelMap model) {
         if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
+            return LOGIN_PAGE;
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                enrollmentService.getOrCreateCourse(enrollmentId, model);
-                return "enrollment";
+                enrollment = enrollmentService.getOrCreateEnrollment(enrollmentId);
+                setupReferenceData(Action.getAction(action), model);
+                return SAVE_PAGE;
             case VIEW:
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             case DELETE:
                 enrollmentService.delete(enrollmentId);
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             default:
                 break;
         }
-        return "enrollmentList";
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String save(@Valid @ModelAttribute Enrollment enrollment,
-                       HttpSession session,
-                       BindingResult result,
-                       ModelMap model) {
-
+    public String process(@Valid @ModelAttribute Enrollment enrollment,
+                          Errors errors,
+                          HttpSession session,
+                          ModelMap model) {
         if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
+            return LOGIN_PAGE;
         }
 
-        if (result.hasErrors()) {
-            return "enrollmentList";
+        if (errors.hasErrors()) {
+            return SAVE_PAGE;
         }
         enrollmentService.saveOrUpdate(enrollment);
-        showAll(model);
 
-        return "enrollmentList";
+        return DONE_PAGE;
     }
 
-    public void showAll(ModelMap model) {
+    public void setupReferenceData(Action action, ModelMap model) {
         model.addAttribute("enrollmentList", enrollmentService.findAll());
+        if (action.equals(Action.EDIT)) {
+            model.addAttribute("enrollment", enrollment);
+        }
     }
 }

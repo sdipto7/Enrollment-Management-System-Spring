@@ -20,6 +20,7 @@ public class CourseEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(String courseCode) {
         if (Objects.nonNull(courseCode)) {
+            System.out.println("in course editor");
             setValue(courseService.findByCourseCode(courseCode));
         }
     }

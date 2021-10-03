@@ -7,7 +7,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +33,10 @@ public class CourseController {
 
     private static final String LOGIN_PAGE = "login";
 
+    private static final String DONE_PAGE = "success";
+
+    private Course course;
+
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam String action,
                        @RequestParam(defaultValue = "0") long courseId,
@@ -43,16 +47,19 @@ public class CourseController {
             return LOGIN_PAGE;
         }
 
+        System.out.println(session.getAttribute("currentUser.role"));
+
         switch (Action.getAction(action)) {
             case EDIT:
-                courseService.getOrCreateCourse(courseId, model);
+                course = courseService.getOrCreateCourse(courseId);
+                setupReferenceData(Action.getAction(action), model);
                 return SAVE_PAGE;
             case VIEW:
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             case DELETE:
                 courseService.delete(courseId);
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             default:
                 break;
@@ -62,25 +69,27 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String save(@Valid @ModelAttribute Course course,
-                       HttpSession session,
-                       BindingResult result,
-                       ModelMap model) {
+    public String process(@Valid @ModelAttribute Course course,
+                          Errors errors,
+                          HttpSession session,
+                          ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
             return LOGIN_PAGE;
         }
 
-        if (result.hasErrors()) {
+        if (errors.hasErrors()) {
             return VIEW_PAGE;
         }
         courseService.saveOrUpdate(course);
-        showAll(model);
 
-        return VIEW_PAGE;
+        return DONE_PAGE;
     }
 
-    public void showAll(ModelMap model) {
+    public void setupReferenceData(Action action, ModelMap model) {
         model.addAttribute("courseList", courseService.findAll());
+        if (action.equals(Action.EDIT)){
+            model.addAttribute("course", course);
+        }
     }
 }

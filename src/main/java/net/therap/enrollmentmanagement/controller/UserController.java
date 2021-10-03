@@ -9,7 +9,7 @@ import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +27,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private static final String VIEW_PAGE = "userList";
+
+    private static final String SAVE_PAGE = "user";
+
+    private static final String LOGIN_PAGE = "login";
+
+    private static final String DONE_PAGE = "success";
+
+    private User user;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Role.class, "role", new RoleEditor());
@@ -37,47 +47,49 @@ public class UserController {
                        @RequestParam(defaultValue = "0") long userId,
                        HttpSession session,
                        ModelMap model) {
-
         if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
+            return LOGIN_PAGE;
         }
         switch (Action.getAction(action)) {
             case EDIT:
-                userService.getOrCreateUser(userId, model);
-                return "user";
+                user = userService.getOrCreateUser(userId);
+                setupReferenceData(Action.getAction(action), model);
+                return SAVE_PAGE;
             case VIEW:
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             case DELETE:
                 userService.delete(userId);
-                showAll(model);
+                setupReferenceData(Action.getAction(action), model);
                 break;
             default:
                 break;
         }
-        return "userList";
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String save(@Valid @ModelAttribute User user,
-                       HttpSession session,
-                       BindingResult result,
-                       ModelMap model) {
+    public String process(@Valid @ModelAttribute User user,
+                          Errors errors,
+                          HttpSession session,
+                          ModelMap model) {
 
         if (SessionUtil.checkInvalidLogin(session)) {
-            return "login";
+            return LOGIN_PAGE;
         }
 
-        if (result.hasErrors()) {
-            return "userList";
+        if (errors.hasErrors()) {
+            return SAVE_PAGE;
         }
         userService.saveOrUpdate(user);
-        showAll(model);
 
-        return "userList";
+        return DONE_PAGE;
     }
 
-    public void showAll(ModelMap model) {
+    public void setupReferenceData(Action action, ModelMap model) {
         model.addAttribute("userList", userService.findAll());
+        if (action.equals(Action.EDIT)) {
+            model.addAttribute("user", user);
+        }
     }
 }

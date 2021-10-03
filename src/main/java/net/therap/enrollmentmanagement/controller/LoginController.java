@@ -25,7 +25,7 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
-    public String login(@Valid @ModelAttribute("credential") Credential credential, HttpSession session) {
+    public String login(@Valid @ModelAttribute Credential credential, HttpSession session) {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user)) {
             session.setAttribute("currentUser", user);

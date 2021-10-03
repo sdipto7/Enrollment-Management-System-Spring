@@ -10,27 +10,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title><spring:message code="login.title"/></title>
 </head>
 <body>
-
     <form:form action="loginForm" method="post" modelAttribute="credential">
-        <form:label path="userName">
-            <spring:message text="Username" />
-        </form:label>
-        <form:input path="userName" />
-
-        <form:label path="password">
-            <spring:message text="Password" />
-        </form:label>
-        <form:input path="password" />
-
+        <table>
+            <tr>
+                <td>
+                    <form:label path="userName">
+                        <spring:message text="Username" />
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="userName" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:label path="password">
+                        <spring:message text="Password" />
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="password" />
+                </td>
+            </tr>
+        </table>
         <input type="submit" value="<spring:message text="login"/>">
     </form:form>
-<%--    <form action="loginForm" method="post">--%>
-<%--        <label> Username: <input type="text" name="userName"></label><br><br>--%>
-<%--        <label> Password: <input type="password" name="password"></label><br><br>--%>
-<%--        <input type="submit" value="login">--%>
-<%--    </form>--%>
 </body>
 </html>

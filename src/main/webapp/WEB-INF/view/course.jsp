@@ -9,12 +9,12 @@
 --%>
 <html>
 <head>
-    <title>Edit Course</title>
+    <title><spring:message code="course.title"/></title>
 </head>
 <body>
-    <form:form action="/course" commandName="course">
+    <form:form action="/course" modelAttribute="course">
         <table>
-            <c:if test="${action == 'update'}">
+            <c:if test="${id != 0}">
                 <tr>
                     <td>
                         <form:hidden path="id" />
@@ -32,6 +32,9 @@
                 </td>
             </tr>
             <tr>
+                <form:errors path="courseCode"/>
+            </tr>
+            <tr>
                 <td>
                     <form:label path="courseTitle">
                         <spring:message text="Course Title"/>
@@ -42,8 +45,11 @@
                 </td>
             </tr>
             <tr>
+                <form:errors path="courseTitle"/>
+            </tr>
+            <tr>
                 <td colspan="2">
-                <input type="submit" name="action" value="<spring:message text="${action}"/>" />
+                <input type="submit" name="action" value="<spring:message text="Save"/>" />
                 </td>
             </tr>
         </table>
