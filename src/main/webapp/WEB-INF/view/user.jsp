@@ -12,7 +12,7 @@
     <title><spring:message code="user.title"/></title>
 </head>
 <body>
-    <form:form action="/user" modelAttribute="user">
+    <form:form action="/user" modelAttribute="user" method="post">
         <table>
             <c:if test="${id != 0}">
                 <tr>
