@@ -2,8 +2,6 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
-import net.therap.enrollmentmanagement.domain.Role;
-import net.therap.enrollmentmanagement.editor.RoleEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +32,6 @@ public class CourseController {
 
     private static final String SAVE_PAGE = "course";
 
-    private static final String LOGIN_PAGE = "login";
-
     private static final String DONE_PAGE = "success";
 
     private Course course;
@@ -50,6 +46,7 @@ public class CourseController {
                        @RequestParam(defaultValue = "0") long courseId,
                        HttpSession session,
                        ModelMap model) throws GlobalExceptionHandler {
+
         AccessManager.checkLogin(session);
 
         switch (Action.getAction(action)) {
@@ -63,7 +60,7 @@ public class CourseController {
             case DELETE:
                 courseService.delete(courseId);
                 setupReferenceData(Action.getAction(action), model);
-                break;
+                return DONE_PAGE;
             default:
                 break;
         }
@@ -74,6 +71,7 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
+                          @RequestParam String action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -83,6 +81,7 @@ public class CourseController {
             return VIEW_PAGE;
         }
         courseService.saveOrUpdate(course);
+        setupReferenceData(Action.getAction(action), model);
 
         return DONE_PAGE;
     }
@@ -92,6 +91,12 @@ public class CourseController {
             model.addAttribute("courseList", courseService.findAll());
         } else if (action.equals(Action.EDIT)) {
             model.addAttribute("course", course);
+        } else if (action.equals(Action.DELETE)) {
+            model.addAttribute("entity", "Course");
+            model.addAttribute("operation", "Deleted");
+        } else {
+            model.addAttribute("entity", "Course");
+            model.addAttribute("operation", "Saved");
         }
     }
 }

@@ -36,8 +36,6 @@ public class EnrollmentController {
 
     private static final String SAVE_PAGE = "enrollment";
 
-    private static final String LOGIN_PAGE = "login";
-
     private static final String DONE_PAGE = "success";
 
     private Enrollment enrollment;
@@ -68,7 +66,7 @@ public class EnrollmentController {
             case DELETE:
                 enrollmentService.delete(enrollmentId);
                 setupReferenceData(Action.getAction(action), model);
-                break;
+                return DONE_PAGE;
             default:
                 break;
         }
@@ -78,6 +76,7 @@ public class EnrollmentController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Enrollment enrollment,
                           Errors errors,
+                          @RequestParam String action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -87,6 +86,7 @@ public class EnrollmentController {
             return SAVE_PAGE;
         }
         enrollmentService.saveOrUpdate(enrollment);
+        setupReferenceData(Action.getAction(action), model);
 
         return DONE_PAGE;
     }
@@ -96,6 +96,12 @@ public class EnrollmentController {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
         } else if (action.equals(Action.EDIT)) {
             model.addAttribute("enrollment", enrollment);
+        } else if (action.equals(Action.DELETE)) {
+            model.addAttribute("entity", "Enrollment");
+            model.addAttribute("operation", "Deleted");
+        } else {
+            model.addAttribute("entity", "Enrollment");
+            model.addAttribute("operation", "Saved");
         }
     }
 }

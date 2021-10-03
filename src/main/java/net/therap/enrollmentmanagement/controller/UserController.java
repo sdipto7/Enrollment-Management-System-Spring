@@ -34,8 +34,6 @@ public class UserController {
 
     private static final String SAVE_PAGE = "user";
 
-    private static final String LOGIN_PAGE = "login";
-
     private static final String DONE_PAGE = "success";
 
     private User user;
@@ -65,16 +63,18 @@ public class UserController {
             case DELETE:
                 userService.delete(userId);
                 setupReferenceData(Action.getAction(action), model);
-                break;
+                return DONE_PAGE;
             default:
                 break;
         }
+
         return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
+                          @RequestParam String action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -84,6 +84,7 @@ public class UserController {
             return SAVE_PAGE;
         }
         userService.saveOrUpdate(user);
+        setupReferenceData(Action.getAction(action), model);
 
         return DONE_PAGE;
     }
@@ -93,6 +94,12 @@ public class UserController {
             model.addAttribute("userList", userService.findAll());
         } else if (action.equals(Action.EDIT)) {
             model.addAttribute("user", user);
+        } else if (action.equals(Action.DELETE)) {
+            model.addAttribute("entity", "User");
+            model.addAttribute("operation", "Deleted");
+        } else {
+            model.addAttribute("entity", "User");
+            model.addAttribute("operation", "Saved");
         }
     }
 }

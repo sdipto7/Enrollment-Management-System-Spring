@@ -12,28 +12,22 @@
 </head>
 <body>
     <h2><spring:message code="home.header"/> </h2>
-    <c:url var="courseViewLink" value="/course">
+    <c:url var="courseViewUrl" value="/course">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${courseViewLink}"><c:out value="View Courses"/></a>
-    <br>
-    <br>
+    <a href="${courseViewUrl}"><spring:message code="success.hyperlink.viewCourse"/></a>
 
-    <c:url var="userViewLink" value="/user">
+    <c:url var="userViewUrl" value="/user">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${userViewLink}"><c:out value="View Users"/></a>
-    <br>
-    <br>
+    <a href="${userViewUrl}"><spring:message code="success.hyperlink.viewUser"/></a>
 
-    <c:url var="enrollmentViewLink" value="/enrollment">
+    <c:url var="enrollmentViewUrl" value="/enrollment">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${enrollmentViewLink}"><c:out value="View Enrollments"/></a>
-    <br>
-    <br>
+    <a href="${enrollmentViewUrl}"><spring:message code="success.hyperlink.viewEnrollment"/></a>
 
-    <c:url var="logoutLink" value="/logout"/>
-    <a href="${logoutLink}"><c:out value="Logout"/></a>
+    <c:url var="logoutUrl" value="/logout"/>
+    <a href="${logoutUrl}"><c:out value="Logout"/></a>
 </body>
 </html>
