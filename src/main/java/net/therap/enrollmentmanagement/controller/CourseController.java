@@ -2,8 +2,8 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
+import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
-import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,13 +41,8 @@ public class CourseController {
     public String show(@RequestParam String action,
                        @RequestParam(defaultValue = "0") long courseId,
                        HttpSession session,
-                       ModelMap model) {
-
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return LOGIN_PAGE;
-        }
-
-        System.out.println(session.getAttribute("currentUser.role"));
+                       ModelMap model) throws GlobalExceptionHandler {
+        AccessManager.checkLogin(session);
 
         switch (Action.getAction(action)) {
             case EDIT:
@@ -72,11 +67,9 @@ public class CourseController {
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
                           HttpSession session,
-                          ModelMap model) {
+                          ModelMap model) throws GlobalExceptionHandler {
 
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return LOGIN_PAGE;
-        }
+        AccessManager.checkLogin(session);
 
         if (errors.hasErrors()) {
             return VIEW_PAGE;

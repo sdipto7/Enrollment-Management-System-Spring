@@ -9,8 +9,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -19,16 +19,17 @@ import java.util.Objects;
  * @since 9/10/21
  */
 @Controller
+@SessionAttributes("currentUser")
 public class LoginController {
 
     @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
-    public String login(@Valid @ModelAttribute Credential credential, HttpSession session) {
+    public String login(@Valid @ModelAttribute Credential credential, ModelMap model) {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user)) {
-            session.setAttribute("currentUser", user);
+            model.addAttribute("currentUser", user);
             return "home";
         } else {
             return "login";

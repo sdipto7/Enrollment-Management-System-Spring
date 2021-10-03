@@ -26,10 +26,12 @@ public class User extends Persistent {
     @NotNull(message = "You must select a role for the user")
     private Role role;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",
+            fetch = FetchType.LAZY)
     private Credential credential;
 
     @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     private List<Enrollment> enrollmentList;
 

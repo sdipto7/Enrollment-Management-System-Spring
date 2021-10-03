@@ -18,6 +18,7 @@
                 <tr>
                     <td>
                         <form:hidden path="id" />
+                        <form:hidden path="created" />
                     </td>
                 </tr>
             </c:if>

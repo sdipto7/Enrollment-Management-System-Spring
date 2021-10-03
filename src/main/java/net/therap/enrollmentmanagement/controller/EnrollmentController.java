@@ -6,8 +6,9 @@ import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
+import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
-import net.therap.enrollmentmanagement.util.SessionUtil;
+//import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,18 +42,18 @@ public class EnrollmentController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(User.class, "user", new UserEditor());
-        binder.registerCustomEditor(Course.class, "course", new CourseEditor());
+        binder.registerCustomEditor(User.class, new UserEditor());
+        binder.registerCustomEditor(Course.class, new CourseEditor());
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam String action,
                        @RequestParam(defaultValue = "0") long enrollmentId,
                        HttpSession session,
-                       ModelMap model) {
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return LOGIN_PAGE;
-        }
+                       ModelMap model) throws GlobalExceptionHandler {
+
+        AccessManager.checkLogin(session);
+
         switch (Action.getAction(action)) {
             case EDIT:
                 enrollment = enrollmentService.getOrCreateEnrollment(enrollmentId);
@@ -75,10 +76,9 @@ public class EnrollmentController {
     public String process(@Valid @ModelAttribute Enrollment enrollment,
                           Errors errors,
                           HttpSession session,
-                          ModelMap model) {
-        if (SessionUtil.checkInvalidLogin(session)) {
-            return LOGIN_PAGE;
-        }
+                          ModelMap model) throws GlobalExceptionHandler {
+
+        AccessManager.checkLogin(session);
 
         if (errors.hasErrors()) {
             return SAVE_PAGE;
