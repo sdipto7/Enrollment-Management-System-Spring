@@ -87,8 +87,9 @@ public class UserController {
     }
 
     public void setupReferenceData(Action action, ModelMap model) {
-        model.addAttribute("userList", userService.findAll());
-        if (action.equals(Action.EDIT)) {
+        if (action.equals(Action.VIEW)) {
+            model.addAttribute("userList", userService.findAll());
+        } else if (action.equals(Action.EDIT)) {
             model.addAttribute("user", user);
         }
     }

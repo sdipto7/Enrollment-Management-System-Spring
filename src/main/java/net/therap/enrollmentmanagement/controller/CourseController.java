@@ -87,8 +87,9 @@ public class CourseController {
     }
 
     public void setupReferenceData(Action action, ModelMap model) {
-        model.addAttribute("courseList", courseService.findAll());
-        if (action.equals(Action.EDIT)){
+        if (action.equals(Action.VIEW)) {
+            model.addAttribute("courseList", courseService.findAll());
+        } else if (action.equals(Action.EDIT)) {
             model.addAttribute("course", course);
         }
     }

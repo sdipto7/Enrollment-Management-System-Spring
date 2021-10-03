@@ -89,8 +89,9 @@ public class EnrollmentController {
     }
 
     public void setupReferenceData(Action action, ModelMap model) {
-        model.addAttribute("enrollmentList", enrollmentService.findAll());
-        if (action.equals(Action.EDIT)) {
+        if (action.equals(Action.VIEW)) {
+            model.addAttribute("enrollmentList", enrollmentService.findAll());
+        } else if (action.equals(Action.EDIT)) {
             model.addAttribute("enrollment", enrollment);
         }
     }
