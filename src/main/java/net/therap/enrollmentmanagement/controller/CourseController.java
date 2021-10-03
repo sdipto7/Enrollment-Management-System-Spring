@@ -2,19 +2,22 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
+import net.therap.enrollmentmanagement.domain.Role;
+import net.therap.enrollmentmanagement.editor.RoleEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author rumi.dipto
@@ -36,6 +39,11 @@ public class CourseController {
     private static final String DONE_PAGE = "success";
 
     private Course course;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam String action,

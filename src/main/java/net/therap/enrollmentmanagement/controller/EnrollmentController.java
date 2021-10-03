@@ -8,8 +8,8 @@ import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
-//import net.therap.enrollmentmanagement.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author rumi.dipto
@@ -44,6 +46,7 @@ public class EnrollmentController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
