@@ -26,6 +26,7 @@ public class Course extends Persistent {
     private String courseTitle;
 
     @OneToMany(mappedBy = "course",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     private List<Enrollment> enrollmentList;
 

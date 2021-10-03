@@ -24,7 +24,8 @@ public class Credential extends Persistent {
     @NotNull
     private String password;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 
