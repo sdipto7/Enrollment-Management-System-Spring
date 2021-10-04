@@ -19,7 +19,7 @@
     </script>
 </head>
 <body>
-<%--<h3><c:out value="${currentUser.role}"/></h3>--%>
+<h2><c:out value="${currentUser.role}" /> </h2>
     <table>
         <tr>
             <th><spring:message code="userList.table.header1"/></th>
@@ -59,7 +59,7 @@
         <br><br>
 <%--    </c:if>--%>
 
-    <c:url var="logoutLink" value="/logout"/>
-    <a href="${logoutLink}"><c:out value="Logout"/></a>
+    <c:url var="logoutUrl" value="/logout"/>
+    <a href="${logoutUrl}"><c:out value="Logout"/></a>
 </body>
 </html>

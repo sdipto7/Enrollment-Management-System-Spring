@@ -16,13 +16,13 @@ public class Course extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "course_code")
-    @NotNull
-    @Size(min = 2, max = 7)
+    @NotNull(message = "Course Title cannot be null")
+    @Size(min = 2, max = 7, message = "Course Code must be of {min} to {max} length")
     private String courseCode;
 
     @Column(name = "course_title")
-    @NotNull
-    @Size(min = 2, max = 100)
+    @NotNull(message = "Course Title cannot be null")
+    @Size(min = 2, max = 100, message = "Course Title must be of {min} to {max} length")
     private String courseTitle;
 
     @OneToMany(mappedBy = "course",
