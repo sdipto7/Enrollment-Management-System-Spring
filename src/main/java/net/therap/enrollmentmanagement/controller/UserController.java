@@ -98,7 +98,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("entity", "User");
             model.addAttribute("operation", "Saved");
-        } else if (action.equals(Action.DELETE)) {
+        } else {
             model.addAttribute("entity", "User");
             model.addAttribute("operation", "Deleted");
         }

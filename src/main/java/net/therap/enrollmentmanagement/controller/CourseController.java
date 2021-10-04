@@ -95,7 +95,7 @@ public class CourseController {
             model.addAttribute("course", course);
             model.addAttribute("entity", "Course");
             model.addAttribute("operation", "Saved");
-        } else if (action.equals(Action.DELETE)) {
+        } else {
             model.addAttribute("entity", "Course");
             model.addAttribute("operation", "Deleted");
         }

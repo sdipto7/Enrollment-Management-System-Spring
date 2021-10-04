@@ -106,14 +106,13 @@ public class EnrollmentController {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
         } else if (action.equals(Action.SAVE)) {
             model.addAttribute("enrollment", enrollment);
-            model.addAttribute("courseList", courseService.findAll());
-            model.addAttribute("userList", userService.findAll());
-        } else if (action.equals(Action.DELETE)) {
-            model.addAttribute("entity", "Enrollment");
-            model.addAttribute("operation", "Deleted");
-        } else {
             model.addAttribute("entity", "Enrollment");
             model.addAttribute("operation", "Saved");
+            model.addAttribute("courseList", courseService.findAll());
+            model.addAttribute("userList", userService.findAll());
+        } else {
+            model.addAttribute("entity", "Enrollment");
+            model.addAttribute("operation", "Deleted");
         }
     }
 }
