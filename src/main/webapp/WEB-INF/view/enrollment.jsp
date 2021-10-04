@@ -25,21 +25,31 @@
             <tr>
                 <td>
                     <form:label path="user">
-                        <spring:message text="User's name"/>
+                        <spring:message text="User"/>
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="user" />
+                    <form:select path = "user">
+                        <form:options items="${userList}" itemValue="id" itemLabel="name"/>
+                    </form:select>
+                </td>
+                <td>
+                    <form:errors path="user" />
                 </td>
             </tr>
             <tr>
                 <td>
                     <form:label path="course">
-                        <spring:message text="Course Code"/>
+                        <spring:message text="Course"/>
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="course" />
+                    <form:select path = "course">
+                        <form:options items="${courseList}" itemValue="id" itemLabel="courseCode"/>
+                    </form:select>
+                </td>
+                <td>
+                    <form:errors path="course" />
                 </td>
             </tr>
             <tr>

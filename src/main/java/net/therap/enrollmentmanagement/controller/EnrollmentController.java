@@ -7,7 +7,9 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
+import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
+import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,12 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CourseService courseService;
 
     private static final String VIEW_PAGE = "enrollmentList";
 
@@ -96,6 +104,8 @@ public class EnrollmentController {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
         } else if (action.equals(Action.EDIT)) {
             model.addAttribute("enrollment", enrollment);
+            model.addAttribute("courseList", courseService.findAll());
+            model.addAttribute("userList", userService.findAll());
         } else if (action.equals(Action.DELETE)) {
             model.addAttribute("entity", "Enrollment");
             model.addAttribute("operation", "Deleted");
