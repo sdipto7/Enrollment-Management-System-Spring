@@ -1,8 +1,6 @@
 package net.therap.enrollmentmanagement.editor;
 
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Objects;
@@ -13,14 +11,11 @@ import java.util.Objects;
  */
 public class UserEditor extends PropertyEditorSupport {
 
-    @Autowired
-    UserService userService;
-
     @Override
-    public void setAsText(String userName) {
-        if (Objects.nonNull(userName)) {
+    public void setAsText(String id) {
+        if (Objects.nonNull(id)) {
             User user = new User();
-            user.setId(Long.parseLong(userName));
+            user.setId(Long.parseLong(id));
             setValue(user);
         }
     }
