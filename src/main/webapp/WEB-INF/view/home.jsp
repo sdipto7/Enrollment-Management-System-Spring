@@ -11,7 +11,10 @@
     <title><spring:message code="home.title"/></title>
 </head>
 <body>
-    <h2><spring:message code="home.header"/> </h2>
+    <h2><spring:message code="home.header"/>
+        <c:if test="${currentUser.role == 'ADMIN'}">
+        <c:out value="${currentUser.role}"/>
+        </c:if></h2>
     <c:url var="courseViewUrl" value="/course">
         <c:param name="action" value="view"/>
     </c:url>
@@ -28,6 +31,6 @@
     <a href="${enrollmentViewUrl}"><spring:message code="success.hyperlink.viewEnrollment"/></a>
 
     <c:url var="logoutUrl" value="/logout"/>
-    <a href="${logoutUrl}"><c:out value="Logout"/></a>
+    <a href="${logoutUrl}"><spring:message code="logout"/></a>
 </body>
 </html>

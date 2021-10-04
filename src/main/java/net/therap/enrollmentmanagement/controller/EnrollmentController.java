@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
+import net.therap.enrollmentmanagement.editor.ActionEditor;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
@@ -52,28 +53,29 @@ public class EnrollmentController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
+        binder.registerCustomEditor(Action.class, new ActionEditor());
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam String action,
+    public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long enrollmentId,
                        HttpSession session,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
-        switch (Action.getAction(action)) {
-            case EDIT:
+        switch (action) {
+            case SAVE:
                 enrollment = enrollmentService.getOrCreateEnrollment(enrollmentId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 break;
             case DELETE:
                 enrollmentService.delete(enrollmentId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return DONE_PAGE;
             default:
                 break;
@@ -84,7 +86,7 @@ public class EnrollmentController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Enrollment enrollment,
                           Errors errors,
-                          @RequestParam String action,
+                          @RequestParam Action action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -94,7 +96,7 @@ public class EnrollmentController {
             return SAVE_PAGE;
         }
         enrollmentService.saveOrUpdate(enrollment);
-        setupReferenceData(Action.getAction(action), model);
+        setupReferenceData(action, model);
 
         return DONE_PAGE;
     }
@@ -102,7 +104,7 @@ public class EnrollmentController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
-        } else if (action.equals(Action.EDIT)) {
+        } else if (action.equals(Action.SAVE)) {
             model.addAttribute("enrollment", enrollment);
             model.addAttribute("courseList", courseService.findAll());
             model.addAttribute("userList", userService.findAll());

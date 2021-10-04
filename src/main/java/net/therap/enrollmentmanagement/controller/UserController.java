@@ -3,6 +3,7 @@ package net.therap.enrollmentmanagement.controller;
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Role;
 import net.therap.enrollmentmanagement.domain.User;
+import net.therap.enrollmentmanagement.editor.ActionEditor;
 import net.therap.enrollmentmanagement.editor.RoleEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.UserService;
@@ -41,28 +42,29 @@ public class UserController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Role.class, new RoleEditor());
+        binder.registerCustomEditor(Action.class, new ActionEditor());
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam String action,
+    public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long userId,
                        HttpSession session,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
-        switch (Action.getAction(action)) {
-            case EDIT:
+        switch (action) {
+            case SAVE:
                 user = userService.getOrCreateUser(userId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 break;
             case DELETE:
                 userService.delete(userId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return DONE_PAGE;
             default:
                 break;
@@ -74,7 +76,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
-                          @RequestParam String action,
+                          @RequestParam Action action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -84,7 +86,7 @@ public class UserController {
             return SAVE_PAGE;
         }
         userService.saveOrUpdate(user);
-        setupReferenceData(Action.getAction(action), model);
+        setupReferenceData(action, model);
 
         return DONE_PAGE;
     }
@@ -92,14 +94,13 @@ public class UserController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("userList", userService.findAll());
-        } else if (action.equals(Action.EDIT)) {
+        } else if (action.equals(Action.SAVE)) {
             model.addAttribute("user", user);
+            model.addAttribute("entity", "User");
+            model.addAttribute("operation", "Saved");
         } else if (action.equals(Action.DELETE)) {
             model.addAttribute("entity", "User");
             model.addAttribute("operation", "Deleted");
-        } else {
-            model.addAttribute("entity", "User");
-            model.addAttribute("operation", "Saved");
         }
     }
 }

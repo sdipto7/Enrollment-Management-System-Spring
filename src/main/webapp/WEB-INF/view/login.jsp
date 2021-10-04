@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page session="false" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -36,7 +35,7 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" value="<spring:message text="login"/>">
+        <input type="submit" value="<spring:message code="login"/>">
     </form:form>
 </body>
 </html>

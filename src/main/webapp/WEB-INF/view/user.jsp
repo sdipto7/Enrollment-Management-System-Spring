@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page session="false" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -64,7 +63,7 @@
             </tr>
         </table>
     </form:form>
-    <c:url var="logoutLink" value="/logout"/>
-    <a href="${logoutLink}"><c:out value="Logout"/></a>
+    <c:url var="logoutUrl" value="/logout"/>
+    <a href="${logoutUrl}"><spring:message code="logout"/></a>
 </body>
 </html>

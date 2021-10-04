@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page session="false" %>
 <%--
 * @author rumi.dipto
 * @since 9/10/21
@@ -27,7 +26,7 @@
         </tr>
         <c:forEach var="enrollment" items="${enrollmentList}">
             <c:url var="updateUrl" value="/enrollment">
-                <c:param name="action" value="edit"/>
+                <c:param name="action" value="save"/>
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
             <c:url var="deleteUrl" value="/enrollment">
@@ -38,27 +37,27 @@
                 <td><c:out value="${enrollment.user.name}"/></td>
                 <td><c:out value="${enrollment.course.courseCode}"/></td>
                 <td><c:out value="${enrollment.course.courseTitle}"/></td>
-<%--                <c:if test="${currentUser.role == 'ADMIN'}">--%>
+                <c:if test="${currentUser.role == 'ADMIN'}">
                     <td>
-                        <a href="${updateUrl}"><c:out value="Edit"/></a>
+                        <a href="${updateUrl}"><spring:message code="update"/></a>
                         |
-                        <a href="${deleteUrl}" onclick="showAlert()"> <c:out value="Delete"/></a>
+                        <a href="${deleteUrl}" onclick="showAlert()"><spring:message code="delete"/></a>
                     </td>
-<%--                </c:if>--%>
+                </c:if>
             </tr>
         </c:forEach>
     </table>
     <br>
-<%--    <c:if test="${currentUser.role == 'ADMIN'}">--%>
+    <c:if test="${currentUser.role == 'ADMIN'}">
         <c:url var="addUrl" value="/enrollment">
-            <c:param name="action" value="edit"/>
+            <c:param name="action" value="save"/>
             <c:param name="enrollmentId" value="0"/>
         </c:url>
-        <a href="${addUrl}"><c:out value="Add Enrollment"/></a>
+        <a href="${addUrl}"><spring:message code="add"/></a>
         <br><br>
-<%--    </c:if>--%>
+    </c:if>
 
-    <c:url var="logoutLink" value="/logout"/>
-    <a href="${logoutLink}"><c:out value="Logout"/></a>
+    <c:url var="logoutUrl" value="/logout"/>
+    <a href="${logoutUrl}"><spring:message code="logout"/></a>
 </body>
 </html>

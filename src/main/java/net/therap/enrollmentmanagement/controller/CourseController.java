@@ -2,6 +2,7 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
+import net.therap.enrollmentmanagement.editor.ActionEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,28 +39,29 @@ public class CourseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Action.class, new ActionEditor());
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam String action,
+    public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long courseId,
                        HttpSession session,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
-        switch (Action.getAction(action)) {
-            case EDIT:
+        switch (action) {
+            case SAVE:
                 course = courseService.getOrCreateCourse(courseId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 break;
             case DELETE:
                 courseService.delete(courseId);
-                setupReferenceData(Action.getAction(action), model);
+                setupReferenceData(action, model);
                 return DONE_PAGE;
             default:
                 break;
@@ -71,7 +73,7 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
-                          @RequestParam String action,
+                          @RequestParam Action action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -81,7 +83,7 @@ public class CourseController {
             return VIEW_PAGE;
         }
         courseService.saveOrUpdate(course);
-        setupReferenceData(Action.getAction(action), model);
+        setupReferenceData(action, model);
 
         return DONE_PAGE;
     }
@@ -89,14 +91,13 @@ public class CourseController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("courseList", courseService.findAll());
-        } else if (action.equals(Action.EDIT)) {
+        } else if (action.equals(Action.SAVE)) {
             model.addAttribute("course", course);
+            model.addAttribute("entity", "Course");
+            model.addAttribute("operation", "Saved");
         } else if (action.equals(Action.DELETE)) {
             model.addAttribute("entity", "Course");
             model.addAttribute("operation", "Deleted");
-        } else {
-            model.addAttribute("entity", "Course");
-            model.addAttribute("operation", "Saved");
         }
     }
 }
