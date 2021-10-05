@@ -1,14 +1,14 @@
 package net.therap.enrollmentmanagement.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * @author rumi.dipto
  * @since 10/4/21
  */
-@Controller
+@ControllerAdvice
 public class GlobalExceptionHandler extends Throwable {
 
     @ExceptionHandler
