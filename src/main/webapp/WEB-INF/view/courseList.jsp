@@ -11,7 +11,9 @@
     <title><spring:message code="courseList.title"/></title>
     <script type="text/javascript">
         function showAlert() {
-            if (!(confirm('Are you sure to delete the selected course ?'))) return false;
+            if (!(confirm('Are you sure to delete the selected course ?'))) {
+                return false;
+            }
         }
     </script>
 </head>
