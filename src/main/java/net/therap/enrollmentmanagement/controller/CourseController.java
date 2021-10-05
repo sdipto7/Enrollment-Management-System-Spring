@@ -77,7 +77,7 @@ public class CourseController {
         AccessManager.checkLogin(session);
 
         if (errors.hasErrors()) {
-            return VIEW_PAGE;
+            return SAVE_PAGE;
         }
         courseService.saveOrUpdate(course);
         setupReferenceData(action, model);
