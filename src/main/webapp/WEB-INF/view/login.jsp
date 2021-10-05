@@ -12,7 +12,7 @@
     <title><spring:message code="login.title"/></title>
 </head>
 <body>
-    <form:form action="loginForm" method="post" modelAttribute="credential">
+    <form:form action="login" method="post" modelAttribute="credential">
         <table>
             <tr>
                 <td>

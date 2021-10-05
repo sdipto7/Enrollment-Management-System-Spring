@@ -25,7 +25,14 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String viewLoginPage(ModelMap model) {
+        model.addAttribute("credential", new Credential());
+
+        return "login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@Valid @ModelAttribute Credential credential, ModelMap model) {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user)) {
@@ -34,12 +41,5 @@ public class LoginController {
         } else {
             return "login";
         }
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String viewLoginPage(ModelMap model) {
-        model.addAttribute("credential", new Credential());
-
-        return "login";
     }
 }
