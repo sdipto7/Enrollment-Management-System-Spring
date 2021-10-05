@@ -24,6 +24,7 @@
                     <form:input path="userName" />
                 </td>
             </tr>
+            <form:errors path="userName" />
             <tr>
                 <td>
                     <form:label path="password">
@@ -34,6 +35,7 @@
                     <form:input path="password" />
                 </td>
             </tr>
+            <form:errors path="password" />
         </table>
         <input type="submit" value="<spring:message code="login"/>">
     </form:form>
