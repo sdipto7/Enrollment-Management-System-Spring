@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
  */
 @Controller
 @SessionAttributes("currentUser")
-public class LoginController {
+public class AuthController {
 
     @Autowired
     private UserService userService;
@@ -30,6 +31,14 @@ public class LoginController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewLoginPage(ModelMap model) {
+        model.addAttribute("credential", new Credential());
+
+        return LOGIN_PAGE;
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session, ModelMap model) {
+        session.invalidate();
         model.addAttribute("credential", new Credential());
 
         return LOGIN_PAGE;
