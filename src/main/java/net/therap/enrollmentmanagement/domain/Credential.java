@@ -20,7 +20,7 @@ public class Credential extends Persistent {
     private String userName;
 
     @Column(name = "password")
-    @Size(min = 2, max = 100)
+    @Size(min = 2, max = 45)
     @NotNull
     private String password;
 
