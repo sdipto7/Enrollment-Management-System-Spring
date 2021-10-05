@@ -4,8 +4,7 @@ CREATE TABLE course(
     course_code VARCHAR(7) NOT NULL,
     created DATETIME NOT NULL,
     updated DATETIME NOT NULL,
-    PRIMARY KEY("id")
-);
+    PRIMARY KEY("id"));
 
 CREATE TABLE user(
     id INT NOT NULL AUTO_INCREMENT,
@@ -13,8 +12,7 @@ CREATE TABLE user(
     role VARCHAR(10) NOT NULL
     created DATETIME NOT NULL,
     updated DATETIME NOT NULL,
-    PRIMARY KEY("id")
-);
+    PRIMARY KEY("id"));
 
 CREATE TABLE enrollment(
     id INT NOT NULL AUTO_INCREMENT,
@@ -24,8 +22,7 @@ CREATE TABLE enrollment(
     updated DATETIME NOT NULL,
     PRIMARY KEY("id")
     CONSTRAINT FK_course_id FOREIGN KEY (course_id) REFERENCES course (id),
-    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES user (id)
-);
+    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES user (id));
 
 CREATE TABLE credential (
     id INT NOT NULL AUTO_INCREMENT,
@@ -36,5 +33,4 @@ CREATE TABLE credential (
     updated DATETIME NOT NULL,
     PRIMARY KEY ("id"),
     CONSTRAINT uk_user_id UNIQUE (user_id),
-    CONSTRAINT  uk_user_name UNIQUE (user_name)
-);
+    CONSTRAINT  uk_user_name UNIQUE (user_name));
