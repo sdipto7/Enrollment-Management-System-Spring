@@ -29,8 +29,7 @@
         <property name="persistenceUnitName" value="persistence-unit-1"/>
     </bean>
 
-    <bean class="org.springframework.orm.jpa.JpaTransactionManager"
-          id="transactionManager">
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
