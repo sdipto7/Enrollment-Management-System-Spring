@@ -47,7 +47,7 @@ public class UserDao {
         if (user.isNew()) {
             em.persist(user);
         } else {
-            em.merge(user);
+            user = em.merge(user);
         }
         em.flush();
 

@@ -33,7 +33,7 @@ public class EnrollmentDao {
         if (enrollment.isNew()) {
             em.persist(enrollment);
         } else {
-            em.merge(enrollment);
+            enrollment = em.merge(enrollment);
         }
         em.flush();
 
