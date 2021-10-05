@@ -24,7 +24,7 @@ public class CourseDao {
     }
 
     public Course findByCourseCode(String courseCode) {
-        return (Course) em.createQuery("FROM Course c WHERE c.courseCode = :code")
+        return em.createQuery("FROM Course c WHERE c.courseCode = :code", Course.class)
                 .setParameter("code", courseCode)
                 .getSingleResult();
     }
