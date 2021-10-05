@@ -40,13 +40,9 @@ public class EnrollmentController {
 
     @Autowired
     private CourseService courseService;
-
     private static final String VIEW_PAGE = "enrollmentList";
-
     private static final String SAVE_PAGE = "enrollment";
-
     private static final String DONE_PAGE = "success";
-
     private Enrollment enrollment;
 
     @InitBinder

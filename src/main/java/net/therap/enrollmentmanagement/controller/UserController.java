@@ -30,13 +30,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     private static final String VIEW_PAGE = "userList";
-
     private static final String SAVE_PAGE = "user";
-
     private static final String DONE_PAGE = "success";
-
     private User user;
 
     @InitBinder

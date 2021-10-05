@@ -28,11 +28,8 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
-
     private static final String VIEW_PAGE = "courseList";
-
     private static final String SAVE_PAGE = "course";
-
     private static final String DONE_PAGE = "success";
 
     private Course course;
