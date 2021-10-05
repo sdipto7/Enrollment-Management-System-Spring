@@ -8,7 +8,7 @@
 --%>
 <html>
 <head>
-    <title><spring:message code="enrollment.title"/></title>
+    <title><spring:message code="enrollment.title.edit"/></title>
 </head>
 <body>
     <form:form action="/enrollment" modelAttribute="enrollment" method="post">
@@ -59,6 +59,6 @@
         </table>
     </form:form>
     <c:url var="logoutUrl" value="/logout"/>
-    <a href="${logoutUrl}"><spring:message code="logout"/></a>
+    <a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
 </body>
 </html>

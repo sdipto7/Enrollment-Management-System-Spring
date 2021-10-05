@@ -37,7 +37,7 @@
             </tr>
             <form:errors path="password" />
         </table>
-        <input type="submit" value="<spring:message code="login"/>">
+        <input type="submit" value="<spring:message code="prompt.login"/>">
     </form:form>
 </body>
 </html>

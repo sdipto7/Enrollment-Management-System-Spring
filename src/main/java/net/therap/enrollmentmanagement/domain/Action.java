@@ -6,8 +6,8 @@ package net.therap.enrollmentmanagement.domain;
  */
 public enum Action {
 
-    SAVE("save"),
-    DELETE("delete"),
+    SAVE("prompt.save"),
+    DELETE("prompt.delete"),
     VIEW("view");
 
     private String naturalName;

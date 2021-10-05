@@ -20,9 +20,9 @@
 <body>
     <table>
         <tr>
-            <th><spring:message code="userList.table.header1"/></th>
+            <th><spring:message code="user.label.name"/></th>
             <c:if test="${currentUser.role == 'ADMIN'}">
-                <th><spring:message code="userList.table.header2"/></th>
+                <th><spring:message code="user.label.role"/></th>
             </c:if>
         </tr>
         <c:forEach var="user" items="${userList}">
@@ -39,9 +39,9 @@
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td><c:out value="${user.role}"/></td>
                     <td>
-                        <a href="${updateUrl}"><spring:message code="update"/></a>
+                        <a href="${updateUrl}"><spring:message code="prompt.update"/></a>
                         |
-                        <a href="${deleteUrl}" onclick="showAlert()"> <spring:message code="delete"/></a>
+                        <a href="${deleteUrl}" onclick="showAlert()"> <spring:message code="prompt.delete"/></a>
                     </td>
                 </c:if>
             </tr>
@@ -53,11 +53,11 @@
             <c:param name="action" value="save"/>
             <c:param name="userId" value="0"/>
         </c:url>
-        <a href="${addUrl}"><spring:message code="add"/></a>
+        <a href="${addUrl}"><spring:message code="prompt.add"/></a>
         <br><br>
     </c:if>
 
     <c:url var="logoutUrl" value="/logout"/>
-    <a href="${logoutUrl}"><spring:message code="logout"/></a>
+    <a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
 </body>
 </html>

@@ -18,19 +18,19 @@
     <c:url var="courseViewUrl" value="/course">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${courseViewUrl}"><spring:message code="success.hyperlink.viewCourse"/></a>
+    <a href="${courseViewUrl}"><spring:message code="prompt.viewCourse"/></a>
 
     <c:url var="userViewUrl" value="/user">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${userViewUrl}"><spring:message code="success.hyperlink.viewUser"/></a>
+    <a href="${userViewUrl}"><spring:message code="prompt.viewUser"/></a>
 
     <c:url var="enrollmentViewUrl" value="/enrollment">
         <c:param name="action" value="view"/>
     </c:url>
-    <a href="${enrollmentViewUrl}"><spring:message code="success.hyperlink.viewEnrollment"/></a>
+    <a href="${enrollmentViewUrl}"><spring:message code="prompt.viewEnrollment"/></a>
 
     <c:url var="logoutUrl" value="/logout"/>
-    <a href="${logoutUrl}"><spring:message code="logout"/></a>
+    <a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
 </body>
 </html>
