@@ -24,7 +24,7 @@
             <tr>
                 <td>
                     <form:label path="user">
-                        <spring:message text="User"/>
+                        <spring:message code="prompt.user"/>
                     </form:label>
                 </td>
                 <td>
@@ -39,7 +39,7 @@
             <tr>
                 <td>
                     <form:label path="course">
-                        <spring:message text="Course"/>
+                        <spring:message code="prompt.course"/>
                     </form:label>
                 </td>
                 <td>
@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" name="action" value="<spring:message text="Save"/>" />
+                    <input type="submit" name="action" value="<spring:message code="prompt.save"/>" />
                 </td>
             </tr>
         </table>

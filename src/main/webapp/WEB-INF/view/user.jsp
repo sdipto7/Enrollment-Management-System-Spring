@@ -24,7 +24,7 @@
             <tr>
                 <td>
                     <form:label path="name">
-                        <spring:message text="Name"/>
+                        <spring:message code="user.label.name"/>
                     </form:label>
                 </td>
                 <td>
@@ -35,14 +35,14 @@
             <tr>
                 <td>
                     <form:label path="role">
-                        <spring:message text="Role"/>
+                        <spring:message code="user.label.role"/>
                     </form:label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <form:label path="role">
-                        <spring:message text="Admin"/>
+                        <spring:message code="prompt.admin"/>
                     </form:label>
                     <form:radiobutton path="role" value="Admin"/>
                 </td>
@@ -50,7 +50,7 @@
             <tr>
                 <td>
                     <form:label path="role">
-                        <spring:message text="User"/>
+                        <spring:message code="prompt.user"/>
                     </form:label>
                     <form:radiobutton path="role" value="User"/>
                 </td>
@@ -58,7 +58,7 @@
             <form:errors path="role"/>
             <tr>
                 <td colspan="2">
-                    <input type="submit" name="action" value="<spring:message text="Save"/>" />
+                    <input type="submit" name="action" value="<spring:message code="prompt.save"/>" />
                 </td>
             </tr>
         </table>

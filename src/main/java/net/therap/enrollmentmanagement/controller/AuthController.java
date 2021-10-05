@@ -26,7 +26,7 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-    private static final String LOGIN_PAGE = "prompt.login";
+    private static final String LOGIN_PAGE = "login";
     private static final String HOME_PAGE = "home";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

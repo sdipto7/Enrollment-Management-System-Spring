@@ -17,7 +17,7 @@
             <tr>
                 <td>
                     <form:label path="userName">
-                        <spring:message text="Username" />
+                        <spring:message code="prompt.username" />
                     </form:label>
                 </td>
                 <td>
@@ -28,7 +28,7 @@
             <tr>
                 <td>
                     <form:label path="password">
-                        <spring:message text="Password" />
+                        <spring:message code="prompt.password" />
                     </form:label>
                 </td>
                 <td>
