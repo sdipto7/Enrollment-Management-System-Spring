@@ -1,6 +1,7 @@
 package net.therap.enrollmentmanagement.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +19,7 @@ public class Persistent implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
+    @NotNull
     protected Date created;
 
     @Temporal(TemporalType.TIMESTAMP)

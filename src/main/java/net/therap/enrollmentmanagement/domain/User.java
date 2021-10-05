@@ -17,13 +17,13 @@ public class User extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    @NotNull(message = "Name cannot be null")
-    @Size(min = 2, max = 100, message = "Length of name must be between {min} to {max}")
+    @NotNull
+    @Size(min = 2, max = 100)
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @NotNull(message = "You must select a role for the user")
+    @NotNull
     private Role role;
 
     @OneToOne(mappedBy = "user",
@@ -31,7 +31,6 @@ public class User extends Persistent {
     private Credential credential;
 
     @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     private List<Enrollment> enrollmentList;
 
