@@ -22,9 +22,9 @@
                 </td>
                 <td>
                     <form:input path="userName" />
+                    <form:errors path="userName" />
                 </td>
             </tr>
-            <form:errors path="userName" />
             <tr>
                 <td>
                     <form:label path="password">
@@ -33,9 +33,9 @@
                 </td>
                 <td>
                     <form:input path="password" />
+                    <form:errors path="password" />
                 </td>
             </tr>
-            <form:errors path="password" />
         </table>
         <input type="submit" value="<spring:message code="prompt.login"/>">
     </form:form>

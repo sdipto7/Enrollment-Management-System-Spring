@@ -29,10 +29,8 @@
                 </td>
                 <td>
                     <form:input path="courseCode" />
+                    <form:errors path="courseCode"/>
                 </td>
-            </tr>
-            <tr>
-                <form:errors path="courseCode"/>
             </tr>
             <tr>
                 <td>
@@ -42,10 +40,8 @@
                 </td>
                 <td>
                     <form:input path="courseTitle" />
+                    <form:errors path="courseTitle"/>
                 </td>
-            </tr>
-            <tr>
-                <form:errors path="courseTitle"/>
             </tr>
             <tr>
                 <td colspan="2">

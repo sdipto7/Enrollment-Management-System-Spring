@@ -31,8 +31,6 @@
                     <form:select path = "user">
                         <form:options items="${userList}" itemValue="id" itemLabel="name"/>
                     </form:select>
-                </td>
-                <td>
                     <form:errors path="user" />
                 </td>
             </tr>
@@ -46,8 +44,6 @@
                     <form:select path = "course">
                         <form:options items="${courseList}" itemValue="id" itemLabel="courseCode"/>
                     </form:select>
-                </td>
-                <td>
                     <form:errors path="course" />
                 </td>
             </tr>

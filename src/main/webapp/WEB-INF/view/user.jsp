@@ -29,9 +29,9 @@
                 </td>
                 <td>
                     <form:input path="name" />
+                    <form:errors path="name"/>
                 </td>
             </tr>
-            <form:errors path="name"/>
             <tr>
                 <td>
                     <form:label path="role">
@@ -55,7 +55,11 @@
                     <form:radiobutton path="role" value="USER"/>
                 </td>
             </tr>
-            <form:errors path="role"/>
+            <tr>
+                <td>
+                    <form:errors path="role"/>
+                </td>
+            </tr>
             <tr>
                 <td colspan="2">
                     <input type="submit" name="action" value="<spring:message code="prompt.save"/>" />
