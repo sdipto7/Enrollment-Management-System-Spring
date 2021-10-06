@@ -44,7 +44,7 @@
                     <form:label path="role">
                         <spring:message code="prompt.admin"/>
                     </form:label>
-                    <form:radiobutton path="role" value="Admin"/>
+                    <form:radiobutton path="role" value="ADMIN"/>
                 </td>
             </tr>
             <tr>
@@ -52,7 +52,7 @@
                     <form:label path="role">
                         <spring:message code="prompt.user"/>
                     </form:label>
-                    <form:radiobutton path="role" value="User"/>
+                    <form:radiobutton path="role" value="USER"/>
                 </td>
             </tr>
             <form:errors path="role"/>

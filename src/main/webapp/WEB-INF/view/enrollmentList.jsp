@@ -26,11 +26,11 @@
         </tr>
         <c:forEach var="enrollment" items="${enrollmentList}">
             <c:url var="updateUrl" value="/enrollment">
-                <c:param name="action" value="save"/>
+                <c:param name="action" value="UPDATE"/>
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
             <c:url var="deleteUrl" value="/enrollment">
-                <c:param name="action" value="delete"/>
+                <c:param name="action" value="DELETE"/>
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
             <tr>
@@ -50,8 +50,7 @@
     <br>
     <c:if test="${currentUser.role == 'ADMIN'}">
         <c:url var="addUrl" value="/enrollment">
-            <c:param name="action" value="save"/>
-            <c:param name="enrollmentId" value="0"/>
+            <c:param name="action" value="UPDATE"/>
         </c:url>
         <a href="${addUrl}"><spring:message code="prompt.add"/></a>
         <br><br>

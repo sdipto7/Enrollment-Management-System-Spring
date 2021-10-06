@@ -4,7 +4,6 @@ import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.editor.ActionEditor;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
@@ -49,8 +48,7 @@ public class EnrollmentController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
-        binder.registerCustomEditor(Action.class, new ActionEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -62,7 +60,7 @@ public class EnrollmentController {
         AccessManager.checkLogin(session);
 
         switch (action) {
-            case SAVE:
+            case UPDATE:
                 enrollment = enrollmentService.getOrCreateEnrollment(enrollmentId);
                 setupReferenceData(action, model);
                 return SAVE_PAGE;
@@ -100,7 +98,7 @@ public class EnrollmentController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
-        } else if (action.equals(Action.SAVE)) {
+        } else if (action.equals(Action.UPDATE)) {
             model.addAttribute("enrollment", enrollment);
             model.addAttribute("entity", "Enrollment");
             model.addAttribute("operation", "Saved");

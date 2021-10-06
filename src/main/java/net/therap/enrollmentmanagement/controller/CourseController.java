@@ -2,7 +2,6 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
-import net.therap.enrollmentmanagement.editor.ActionEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,7 @@ public class CourseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Action.class, new ActionEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -49,7 +47,7 @@ public class CourseController {
         AccessManager.checkLogin(session);
 
         switch (action) {
-            case SAVE:
+            case UPDATE:
                 course = courseService.getOrCreateCourse(courseId);
                 setupReferenceData(action, model);
                 return SAVE_PAGE;
@@ -70,7 +68,7 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
-                          @RequestParam Action action,
+//                          @RequestParam Action action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -80,7 +78,9 @@ public class CourseController {
             return SAVE_PAGE;
         }
         courseService.saveOrUpdate(course);
-        setupReferenceData(action, model);
+        model.addAttribute("entity", "Course");
+        model.addAttribute("operation", "Saved");
+//        setupReferenceData(action, model);
 
         return DONE_PAGE;
     }
@@ -88,7 +88,7 @@ public class CourseController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("courseList", courseService.findAll());
-        } else if (action.equals(Action.SAVE)) {
+        } else if (action.equals(Action.UPDATE)) {
             model.addAttribute("course", course);
             model.addAttribute("entity", "Course");
             model.addAttribute("operation", "Saved");

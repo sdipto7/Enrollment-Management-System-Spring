@@ -15,17 +15,17 @@
     <a href="/home"><spring:message code="success.hyperlink.home"/></a>
 
     <c:url var="courseViewUrl" value="/course">
-        <c:param name="action" value="view"/>
+        <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${courseViewUrl}"><spring:message code="prompt.viewCourse"/></a>
 
     <c:url var="userViewUrl" value="/user">
-        <c:param name="action" value="view"/>
+        <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${userViewUrl}"><spring:message code="prompt.viewUser"/></a>
 
     <c:url var="enrollmentViewUrl" value="/enrollment">
-        <c:param name="action" value="view"/>
+        <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${enrollmentViewUrl}"><spring:message code="prompt.viewEnrollment"/></a>
 

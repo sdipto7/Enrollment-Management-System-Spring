@@ -1,10 +1,7 @@
 package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
-import net.therap.enrollmentmanagement.domain.Role;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.editor.ActionEditor;
-import net.therap.enrollmentmanagement.editor.RoleEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +34,7 @@ public class UserController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Role.class, new RoleEditor());
-        binder.registerCustomEditor(Action.class, new ActionEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -51,7 +46,7 @@ public class UserController {
         AccessManager.checkLogin(session);
 
         switch (action) {
-            case SAVE:
+            case UPDATE:
                 user = userService.getOrCreateUser(userId);
                 setupReferenceData(action, model);
                 return SAVE_PAGE;
@@ -72,7 +67,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
-                          @RequestParam Action action,
+//                          @RequestParam Action action,
                           HttpSession session,
                           ModelMap model) throws GlobalExceptionHandler {
 
@@ -82,7 +77,9 @@ public class UserController {
             return SAVE_PAGE;
         }
         userService.saveOrUpdate(user);
-        setupReferenceData(action, model);
+        model.addAttribute("entity", "User");
+        model.addAttribute("operation", "Saved");
+//        setupReferenceData(action, model);
 
         return DONE_PAGE;
     }
@@ -90,7 +87,7 @@ public class UserController {
     public void setupReferenceData(Action action, ModelMap model) {
         if (action.equals(Action.VIEW)) {
             model.addAttribute("userList", userService.findAll());
-        } else if (action.equals(Action.SAVE)) {
+        } else if (action.equals(Action.UPDATE)) {
             model.addAttribute("user", user);
             model.addAttribute("entity", "User");
             model.addAttribute("operation", "Saved");

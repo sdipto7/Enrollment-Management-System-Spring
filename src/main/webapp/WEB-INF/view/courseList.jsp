@@ -26,11 +26,11 @@
         <c:forEach var="course" items="${courseList}">
             <c:url var="updateUrl" value="/course">
                 <c:param name="courseId" value="${course.id}"/>
-                <c:param name="action" value="save"/>
+                <c:param name="action" value="UPDATE"/>
             </c:url>
             <c:url var="deleteUrl" value="/course">
                 <c:param name="courseId" value="${course.id}"/>
-                <c:param name="action" value="delete"/>
+                <c:param name="action" value="DELETE"/>
             </c:url>
             <tr>
                 <td><c:out value="${course.courseCode}"/></td>
@@ -48,8 +48,7 @@
     <br>
     <c:if test="${currentUser.role == 'ADMIN'}">
         <c:url var="addUrl" value="/course">
-            <c:param name="action" value="save"/>
-            <c:param name="courseId" value="0"/>
+            <c:param name="action" value="UPDATE"/>
         </c:url>
         <a href="${addUrl}"><spring:message code="prompt.add"/></a>
         <br><br>

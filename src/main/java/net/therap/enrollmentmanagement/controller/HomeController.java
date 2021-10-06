@@ -1,7 +1,5 @@
 package net.therap.enrollmentmanagement.controller;
 
-//import net.therap.enrollmentmanagement.util.SessionUtil;
-
 import net.therap.enrollmentmanagement.service.AccessManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
