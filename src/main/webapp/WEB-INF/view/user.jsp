@@ -12,15 +12,11 @@
 </head>
 <body>
     <form:form action="/user" modelAttribute="user" method="post">
+        <c:if test="${id != 0}">
+            <form:hidden path="id" />
+            <form:hidden path="created" />
+        </c:if>
         <table>
-            <c:if test="${id != 0}">
-                <tr>
-                    <td>
-                        <form:hidden path="id" />
-                        <form:hidden path="created" />
-                    </td>
-                </tr>
-            </c:if>
             <tr>
                 <td>
                     <form:label path="name">
