@@ -23,7 +23,7 @@ public enum Action {
     public static Action getAction(String text) {
         for (Action action : Action.values()) {
             if (action.getNaturalName().equalsIgnoreCase(text)) {
-                return action;
+                return valueOf(text.toUpperCase());
             }
         }
         return null;
