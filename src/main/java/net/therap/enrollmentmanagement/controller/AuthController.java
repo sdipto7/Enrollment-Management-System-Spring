@@ -55,7 +55,7 @@ public class AuthController {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user)) {
             model.addAttribute("currentUser", user);
-            return HOME_PAGE;
+            return "redirect:/home";
         } else {
             return LOGIN_PAGE;
         }

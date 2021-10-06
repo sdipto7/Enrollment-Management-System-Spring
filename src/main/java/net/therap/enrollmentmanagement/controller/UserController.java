@@ -11,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -29,8 +31,7 @@ public class UserController {
     private UserService userService;
     private static final String VIEW_PAGE = "userList";
     private static final String SAVE_PAGE = "user";
-    private static final String DONE_PAGE = "success";
-    private User user;
+    private static final String DONE_PAGE = "redirect:/home";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -41,21 +42,23 @@ public class UserController {
     public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long userId,
                        HttpSession session,
+                       SessionStatus sessionStatus,
+                       RedirectAttributes redirectAttributes,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
         switch (action) {
             case UPDATE:
-                user = userService.getOrCreateUser(userId);
-                setupReferenceData(action, model);
+                setupReferenceData(action, userId, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(action, model);
+                setupReferenceData(action, userId, model);
                 break;
             case DELETE:
                 userService.delete(userId);
-                setupReferenceData(action, model);
+                sessionStatus.setComplete();
+                redirectAttributes.addFlashAttribute("success", "User Successfully Deleted");
                 return DONE_PAGE;
             default:
                 break;
@@ -67,9 +70,9 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
-//                          @RequestParam Action action,
                           HttpSession session,
-                          ModelMap model) throws GlobalExceptionHandler {
+                          SessionStatus sessionStatus,
+                          RedirectAttributes redirectAttributes) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
@@ -77,23 +80,22 @@ public class UserController {
             return SAVE_PAGE;
         }
         userService.saveOrUpdate(user);
-        model.addAttribute("entity", "User");
-        model.addAttribute("operation", "Saved");
-//        setupReferenceData(action, model);
+        sessionStatus.setComplete();
+        redirectAttributes.addFlashAttribute("success", "User Successfully Saved");
 
         return DONE_PAGE;
     }
 
-    public void setupReferenceData(Action action, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
-            model.addAttribute("userList", userService.findAll());
-        } else if (action.equals(Action.UPDATE)) {
-            model.addAttribute("user", user);
-            model.addAttribute("entity", "User");
-            model.addAttribute("operation", "Saved");
-        } else {
-            model.addAttribute("entity", "User");
-            model.addAttribute("operation", "Deleted");
+    public void setupReferenceData(Action action, long userId, ModelMap model) {
+        switch (action) {
+            case VIEW:
+                model.addAttribute("userList", userService.findAll());
+                break;
+            case UPDATE:
+                model.addAttribute("user", userService.getOrCreateUser(userId));
+                break;
+            default:
+                break;
         }
     }
 }

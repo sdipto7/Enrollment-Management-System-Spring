@@ -12,9 +12,13 @@
 </head>
 <body>
     <h2><spring:message code="home.header"/>
-        <c:if test="${currentUser.role == 'ADMIN'}">
-        <c:out value="${currentUser.role}"/>
-        </c:if></h2>
+        <c:out value="${currentUser.name}"/>
+    </h2>
+
+    <c:if test="${not empty success}">
+        <h3>${success}</h3>
+    </c:if>
+
     <c:url var="courseViewUrl" value="/course">
         <c:param name="action" value="VIEW"/>
     </c:url>

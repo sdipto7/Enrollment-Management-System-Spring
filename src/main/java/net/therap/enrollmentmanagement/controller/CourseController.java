@@ -11,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -70,6 +72,8 @@ public class CourseController {
                           Errors errors,
 //                          @RequestParam Action action,
                           HttpSession session,
+                          SessionStatus sessionStatus,
+                          RedirectAttributes redirectAttributes,
                           ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
@@ -78,6 +82,7 @@ public class CourseController {
             return SAVE_PAGE;
         }
         courseService.saveOrUpdate(course);
+        sessionStatus.setComplete();
         model.addAttribute("entity", "Course");
         model.addAttribute("operation", "Saved");
 //        setupReferenceData(action, model);
