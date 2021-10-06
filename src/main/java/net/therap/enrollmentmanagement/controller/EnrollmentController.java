@@ -7,9 +7,7 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
-import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
-import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -35,16 +33,9 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CourseService courseService;
     private static final String VIEW_PAGE = "enrollmentList";
     private static final String SAVE_PAGE = "enrollment";
-    private static final String DONE_PAGE = "success";
-    private Enrollment enrollment;
+    private static final String DONE_PAGE = "redirect:/home";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -57,21 +48,23 @@ public class EnrollmentController {
     public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long enrollmentId,
                        HttpSession session,
+                       SessionStatus sessionStatus,
+                       RedirectAttributes redirectAttributes,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
         switch (action) {
             case UPDATE:
-                enrollment = enrollmentService.getOrCreateEnrollment(enrollmentId);
-                setupReferenceData(action, model);
+                setupReferenceData(action, enrollmentId, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(action, model);
+                setupReferenceData(action, enrollmentId, model);
                 break;
             case DELETE:
                 enrollmentService.delete(enrollmentId);
-                setupReferenceData(action, model);
+                sessionStatus.setComplete();
+                redirectAttributes.addFlashAttribute("success", "Enrollment Successfully Deleted");
                 return DONE_PAGE;
             default:
                 break;
@@ -82,11 +75,9 @@ public class EnrollmentController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Enrollment enrollment,
                           Errors errors,
-//                          @RequestParam Action action,
                           HttpSession session,
                           SessionStatus sessionStatus,
-                          RedirectAttributes redirectAttributes,
-                          ModelMap model) throws GlobalExceptionHandler {
+                          RedirectAttributes redirectAttributes) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
@@ -95,23 +86,21 @@ public class EnrollmentController {
         }
         enrollmentService.saveOrUpdate(enrollment);
         sessionStatus.setComplete();
-//        setupReferenceData(action, model);
+        redirectAttributes.addFlashAttribute("success", "Enrollment Successfully Saved");
 
         return DONE_PAGE;
     }
 
-    public void setupReferenceData(Action action, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
-            model.addAttribute("enrollmentList", enrollmentService.findAll());
-        } else if (action.equals(Action.UPDATE)) {
-            model.addAttribute("enrollment", enrollment);
-            model.addAttribute("entity", "Enrollment");
-            model.addAttribute("operation", "Saved");
-            model.addAttribute("courseList", courseService.findAll());
-            model.addAttribute("userList", userService.findAll());
-        } else {
-            model.addAttribute("entity", "Enrollment");
-            model.addAttribute("operation", "Deleted");
+    public void setupReferenceData(Action action, long enrollmentId, ModelMap model) {
+        switch (action) {
+            case VIEW:
+                model.addAttribute("enrollmentList", enrollmentService.findAll());
+                break;
+            case UPDATE:
+                model.addAttribute("enrollment", enrollmentService.getOrCreateEnrollment(enrollmentId));
+                break;
+            default:
+                break;
         }
     }
 }

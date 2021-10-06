@@ -31,9 +31,7 @@ public class CourseController {
     private CourseService courseService;
     private static final String VIEW_PAGE = "courseList";
     private static final String SAVE_PAGE = "course";
-    private static final String DONE_PAGE = "success";
-
-    private Course course;
+    private static final String DONE_PAGE = "redirect:/home";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -44,21 +42,23 @@ public class CourseController {
     public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long courseId,
                        HttpSession session,
+                       SessionStatus sessionStatus,
+                       RedirectAttributes redirectAttributes,
                        ModelMap model) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
         switch (action) {
             case UPDATE:
-                course = courseService.getOrCreateCourse(courseId);
-                setupReferenceData(action, model);
+                setupReferenceData(action, courseId, model);
                 return SAVE_PAGE;
             case VIEW:
-                setupReferenceData(action, model);
+                setupReferenceData(action, courseId, model);
                 break;
             case DELETE:
                 courseService.delete(courseId);
-                setupReferenceData(action, model);
+                sessionStatus.setComplete();
+                redirectAttributes.addFlashAttribute("success", "Course Successfully Deleted");
                 return DONE_PAGE;
             default:
                 break;
@@ -70,11 +70,9 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
-//                          @RequestParam Action action,
                           HttpSession session,
                           SessionStatus sessionStatus,
-                          RedirectAttributes redirectAttributes,
-                          ModelMap model) throws GlobalExceptionHandler {
+                          RedirectAttributes redirectAttributes) throws GlobalExceptionHandler {
 
         AccessManager.checkLogin(session);
 
@@ -83,23 +81,21 @@ public class CourseController {
         }
         courseService.saveOrUpdate(course);
         sessionStatus.setComplete();
-        model.addAttribute("entity", "Course");
-        model.addAttribute("operation", "Saved");
-//        setupReferenceData(action, model);
+        redirectAttributes.addFlashAttribute("success", "Course Successfully Saved");
 
         return DONE_PAGE;
     }
 
-    public void setupReferenceData(Action action, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
-            model.addAttribute("courseList", courseService.findAll());
-        } else if (action.equals(Action.UPDATE)) {
-            model.addAttribute("course", course);
-            model.addAttribute("entity", "Course");
-            model.addAttribute("operation", "Saved");
-        } else {
-            model.addAttribute("entity", "Course");
-            model.addAttribute("operation", "Deleted");
+    public void setupReferenceData(Action action, long courseId, ModelMap model) {
+        switch (action) {
+            case VIEW:
+                model.addAttribute("courseList", courseService.findAll());
+                break;
+            case UPDATE:
+                model.addAttribute("course", courseService.getOrCreateCourse(courseId));
+                break;
+            default:
+                break;
         }
     }
 }
