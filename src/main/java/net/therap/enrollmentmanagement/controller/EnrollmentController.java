@@ -7,7 +7,9 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
 import net.therap.enrollmentmanagement.service.AccessManager;
+import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
+import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,13 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CourseService courseService;
+
     private static final String VIEW_PAGE = "enrollmentList";
     private static final String SAVE_PAGE = "enrollment";
     private static final String DONE_PAGE = "redirect:/home";
@@ -98,6 +107,8 @@ public class EnrollmentController {
                 break;
             case UPDATE:
                 model.addAttribute("enrollment", enrollmentService.getOrCreateEnrollment(enrollmentId));
+                model.addAttribute("courseList", courseService.findAll());
+                model.addAttribute("userList", userService.findAll());
                 break;
             default:
                 break;
