@@ -2,7 +2,6 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.User;
-import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,18 +33,15 @@ public class UserController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long userId,
-                       HttpSession session,
                        SessionStatus sessionStatus,
                        RedirectAttributes redirectAttributes,
-                       ModelMap model) throws GlobalExceptionHandler {
-
-        AccessManager.checkLogin(session);
+                       ModelMap model) {
 
         switch (action) {
             case UPDATE:
@@ -70,11 +65,8 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
-                          HttpSession session,
                           SessionStatus sessionStatus,
-                          RedirectAttributes redirectAttributes) throws GlobalExceptionHandler {
-
-        AccessManager.checkLogin(session);
+                          RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
             return SAVE_PAGE;

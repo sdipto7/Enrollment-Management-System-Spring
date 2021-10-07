@@ -1,7 +1,6 @@
 package net.therap.enrollmentmanagement.controller;
 
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @since 10/4/21
  */
 @ControllerAdvice
-public class GlobalExceptionHandler extends Throwable {
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(Exception.class)
     public static String loginException(ModelMap model) {
-        model.addAttribute("message", "Invalid Session!");
+        model.addAttribute("message", "Please try again later");
 
         return "error";
     }

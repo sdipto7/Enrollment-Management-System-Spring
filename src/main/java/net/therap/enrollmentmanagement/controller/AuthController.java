@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -37,8 +38,9 @@ public class AuthController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpSession session, ModelMap model) {
+    public String logout(HttpSession session, SessionStatus sessionStatus, ModelMap model) {
         session.invalidate();
+        sessionStatus.setComplete();
         model.addAttribute("credential", new Credential());
 
         return LOGIN_PAGE;
@@ -55,7 +57,7 @@ public class AuthController {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user)) {
             model.addAttribute("currentUser", user);
-            return "redirect:/home";
+            return HOME_PAGE;
         } else {
             return LOGIN_PAGE;
         }

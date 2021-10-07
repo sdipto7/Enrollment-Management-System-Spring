@@ -6,7 +6,6 @@ import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
-import net.therap.enrollmentmanagement.service.AccessManager;
 import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.service.UserService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,18 +48,15 @@ public class EnrollmentController {
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam Action action,
                        @RequestParam(defaultValue = "0") long enrollmentId,
-                       HttpSession session,
                        SessionStatus sessionStatus,
                        RedirectAttributes redirectAttributes,
-                       ModelMap model) throws GlobalExceptionHandler {
-
-        AccessManager.checkLogin(session);
+                       ModelMap model) {
 
         switch (action) {
             case UPDATE:
@@ -84,11 +79,8 @@ public class EnrollmentController {
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Enrollment enrollment,
                           Errors errors,
-                          HttpSession session,
                           SessionStatus sessionStatus,
-                          RedirectAttributes redirectAttributes) throws GlobalExceptionHandler {
-
-        AccessManager.checkLogin(session);
+                          RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
             return SAVE_PAGE;
