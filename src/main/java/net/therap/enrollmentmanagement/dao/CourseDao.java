@@ -16,7 +16,7 @@ import java.util.Objects;
 @Repository
 public class CourseDao {
 
-    @PersistenceContext(unitName = "persistence-unit-1")
+    @PersistenceContext(unitName = "enrollment-management-persistence-unit")
     private EntityManager em;
 
     public Course find(long id) {

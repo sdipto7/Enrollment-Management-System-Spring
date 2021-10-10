@@ -3,6 +3,7 @@ package net.therap.enrollmentmanagement.controller;
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
 import net.therap.enrollmentmanagement.service.CourseService;
+import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -27,13 +28,24 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    public static final String COURSE_CMD = "course";
+
     private static final String VIEW_PAGE = "courseList";
+
     private static final String SAVE_PAGE = "course";
-    private static final String DONE_PAGE = "redirect:/home";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String showList(@RequestParam Action action,
+                           ModelMap model) {
+        setupReferenceData(action, 0, model);
+
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -47,14 +59,11 @@ public class CourseController {
             case UPDATE:
                 setupReferenceData(action, courseId, model);
                 return SAVE_PAGE;
-            case VIEW:
-                setupReferenceData(action, courseId, model);
-                break;
             case DELETE:
                 courseService.delete(courseId);
                 sessionStatus.setComplete();
-                redirectAttributes.addFlashAttribute("success", "Course Successfully Deleted");
-                return DONE_PAGE;
+                setupSuccessData(redirectAttributes);
+                return "redirect:" + Url.DONE;
             default:
                 break;
         }
@@ -72,10 +81,11 @@ public class CourseController {
             return SAVE_PAGE;
         }
         courseService.saveOrUpdate(course);
-        sessionStatus.setComplete();
-        redirectAttributes.addFlashAttribute("success", "Course Successfully Saved");
 
-        return DONE_PAGE;
+        sessionStatus.setComplete();
+        setupSuccessData(redirectAttributes);
+
+        return "redirect:" + Url.DONE;
     }
 
     public void setupReferenceData(Action action, long courseId, ModelMap model) {
@@ -89,5 +99,9 @@ public class CourseController {
             default:
                 break;
         }
+    }
+
+    public void setupSuccessData(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("success", "Courses Successfully Updated");
     }
 }

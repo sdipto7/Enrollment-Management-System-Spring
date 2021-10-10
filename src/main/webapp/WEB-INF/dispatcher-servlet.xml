@@ -26,7 +26,7 @@
     <tx:annotation-driven/>
 
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="persistence-unit-1"/>
+        <property name="persistenceUnitName" value="enrollment-management-persistence-unit"/>
     </bean>
 
     <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">

@@ -17,7 +17,7 @@ import java.util.Objects;
 @Repository
 public class UserDao {
 
-    @PersistenceContext(unitName = "persistence-unit-1")
+    @PersistenceContext(unitName = "enrollment-management-persistence-unit")
     private EntityManager em;
 
     public User find(long id) {

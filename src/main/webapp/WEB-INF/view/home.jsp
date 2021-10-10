@@ -19,7 +19,7 @@
         <h3>${success}</h3>
     </c:if>
 
-    <c:url var="courseViewUrl" value="/course">
+    <c:url var="courseViewUrl" value="/course/list">
         <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${courseViewUrl}"><spring:message code="prompt.viewCourse"/></a>
