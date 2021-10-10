@@ -15,13 +15,13 @@ public class Credential extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "user_name")
-    @Size(min = 2, max = 100)
-    @NotNull
+    @Size(min = 2, max = 100, message = "{credential.userName.length.msg}")
+    @NotNull(message = "{credential.userName.notNull.msg}")
     private String userName;
 
     @Column(name = "password")
-    @Size(min = 2, max = 45)
-    @NotNull
+    @Size(min = 2, max = 45, message = "{credential.password.length.msg}")
+    @NotNull(message = "{credential.password.notNull.msg}")
     private String password;
 
     @OneToOne(fetch = FetchType.LAZY,

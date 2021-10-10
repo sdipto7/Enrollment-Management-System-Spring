@@ -17,13 +17,13 @@ public class User extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    @NotNull
-    @Size(min = 2, max = 100)
+    @Size(min = 2, max = 100, message = "{user.name.length.msg}")
+    @NotNull(message = "{user.name.notNull.msg}")
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @NotNull
+    @NotNull(message = "{user.role.notNull.msg}")
     private Role role;
 
     @OneToOne(mappedBy = "user",
