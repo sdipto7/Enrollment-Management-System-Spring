@@ -21,11 +21,6 @@ public enum Action {
     }
 
     public static Action getAction(String text) {
-        for (Action action : Action.values()) {
-            if (action.getNaturalName().equalsIgnoreCase(text)) {
-                return valueOf(text.toUpperCase());
-            }
-        }
-        return null;
+        return valueOf(text.toUpperCase());
     }
 }
