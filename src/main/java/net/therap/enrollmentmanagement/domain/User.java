@@ -27,7 +27,8 @@ public class User extends Persistent {
     private Role role;
 
     @OneToOne(mappedBy = "user",
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE)
     private Credential credential;
 
     @OneToMany(mappedBy = "user",
