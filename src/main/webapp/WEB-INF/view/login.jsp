@@ -12,6 +12,7 @@
     <title><spring:message code="login.title"/></title>
 </head>
 <body>
+    <h2><c:out value="${errorMessage}"/> </h2>
     <form:form action="login" method="post" commandName="credential">
         <table>
             <tr>
