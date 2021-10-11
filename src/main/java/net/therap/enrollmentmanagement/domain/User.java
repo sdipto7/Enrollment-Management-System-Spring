@@ -17,8 +17,8 @@ public class User extends Persistent {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    @Size(min = 2, max = 100, message = "{user.name.length.msg}")
-    @NotNull(message = "{user.name.notNull.msg}")
+    @Size(min = 2, max = 100, message = "{validation.length.msg}")
+    @NotNull(message = "{validation.notNull.msg}")
     private String name;
 
     @Enumerated(EnumType.STRING)

@@ -33,27 +33,28 @@
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="classpath:messages"/>
-    </bean>
-
-<!--    <mvc:annotation-driven validator="validator"/>-->
-
 <!--    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">-->
 <!--        <property name="validationMessageSource" ref="messageSource"/>-->
 <!--    </bean>-->
 
-<!--    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">-->
-<!--        <property name="messageInterpolator">-->
-<!--            <bean class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator">-->
-<!--                <constructor-arg index="0">-->
-<!--                    <bean class="org.springframework.validation.beanvalidation.MessageSourceResourceBundleLocator">-->
-<!--                        <constructor-arg index="0" ref="messageSource"/>-->
-<!--                    </bean>-->
-<!--                </constructor-arg>-->
-<!--            </bean>-->
-<!--        </property>-->
-<!--    </bean>-->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+    </bean>
+
+    <mvc:annotation-driven validator="validator" />
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="messageInterpolator">
+            <bean class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator">
+                <constructor-arg index="0">
+                    <bean class="org.springframework.validation.beanvalidation.MessageSourceResourceBundleLocator">
+                        <constructor-arg index="0" ref="messageSource"/>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
 
     <mvc:interceptors>
         <bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">
