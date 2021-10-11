@@ -47,13 +47,11 @@
             </tr>
         </c:forEach>
     </table>
-    <br>
     <c:if test="${currentUser.role == 'ADMIN'}">
         <c:url var="addUrl" value="/user">
             <c:param name="action" value="UPDATE"/>
         </c:url>
         <a href="${addUrl}"><spring:message code="prompt.add"/></a>
-        <br><br>
     </c:if>
 
     <c:url var="logoutUrl" value="/logout"/>

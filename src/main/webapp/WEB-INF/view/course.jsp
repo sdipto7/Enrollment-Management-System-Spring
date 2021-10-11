@@ -11,42 +11,40 @@
     <title><spring:message code="course.title.edit"/></title>
 </head>
 <body>
-    <form:form action="/course" modelAttribute="course" method="post">
-        <c:if test="${id != 0}">
-            <form:hidden path="id" />
-            <form:hidden path="created" />
-        </c:if>
-        <table>
-            <tr>
-                <td>
-                    <form:label path="courseCode">
-                        <spring:message code="course.label.code"/>
-                    </form:label>
-                </td>
-                <td>
-                    <form:input path="courseCode" />
-                    <form:errors path="courseCode"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <form:label path="courseTitle">
-                        <spring:message code="course.label.title"/>
-                    </form:label>
-                </td>
-                <td>
-                    <form:input path="courseTitle" />
-                    <form:errors path="courseTitle"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                <input type="submit" name="action" value="<spring:message code="prompt.save"/>" />
-                </td>
-            </tr>
-        </table>
-    </form:form>
-    <c:url var="logoutUrl" value="/logout"/>
-    <a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
+<form:form action="/course" modelAttribute="course" method="post">
+    <form:hidden path="id"/>
+    <form:hidden path="created"/>
+    <table>
+        <tr>
+            <td>
+                <form:label path="courseCode">
+                    <spring:message code="course.label.code"/>
+                </form:label>
+            </td>
+            <td>
+                <form:input path="courseCode"/>
+                <form:errors path="courseCode"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form:label path="courseTitle">
+                    <spring:message code="course.label.title"/>
+                </form:label>
+            </td>
+            <td>
+                <form:input path="courseTitle"/>
+                <form:errors path="courseTitle"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="action" value="<spring:message code="prompt.save"/>"/>
+            </td>
+        </tr>
+    </table>
+</form:form>
+<c:url var="logoutUrl" value="/logout"/>
+<a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
 </body>
 </html>
