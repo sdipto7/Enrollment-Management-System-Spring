@@ -41,10 +41,9 @@ public class EnrollmentDao {
     }
 
     @Transactional
-    public void delete(long id) {
-        Enrollment enrollment = em.getReference(Enrollment.class, id);
+    public void delete(Enrollment enrollment) {
         if (Objects.nonNull(enrollment)) {
-            em.remove(enrollment);
+            em.remove(em.contains(enrollment) ? enrollment : em.merge(enrollment));
         }
         em.flush();
     }

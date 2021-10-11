@@ -9,13 +9,6 @@
 <html>
 <head>
     <title><spring:message code="enrollmentList.title"/></title>
-    <script type="text/javascript">
-        function showAlert() {
-            if (!(confirm('Are you sure to delete the selected enrollment ?'))) {
-                return false;
-            }
-        }
-    </script>
 </head>
 <body>
     <table>
@@ -25,12 +18,7 @@
             <th><spring:message code="course.label.title"/></th>
         </tr>
         <c:forEach var="enrollment" items="${enrollmentList}">
-            <c:url var="updateUrl" value="/enrollment">
-                <c:param name="action" value="UPDATE"/>
-                <c:param name="enrollmentId" value="${enrollment.id}"/>
-            </c:url>
-            <c:url var="deleteUrl" value="/enrollment">
-                <c:param name="action" value="DELETE"/>
+            <c:url var="editUrl" value="/enrollment">
                 <c:param name="enrollmentId" value="${enrollment.id}"/>
             </c:url>
             <tr>
@@ -39,18 +27,14 @@
                 <td><c:out value="${enrollment.course.courseTitle}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td>
-                        <a href="${updateUrl}"><spring:message code="prompt.update"/></a>
-                        |
-                        <a href="${deleteUrl}" onclick="showAlert()"><spring:message code="prompt.delete"/></a>
+                        <a href="${editUrl}"><spring:message code="prompt.update"/></a>
                     </td>
                 </c:if>
             </tr>
         </c:forEach>
     </table>
     <c:if test="${currentUser.role == 'ADMIN'}">
-        <c:url var="addUrl" value="/enrollment">
-            <c:param name="action" value="UPDATE"/>
-        </c:url>
+        <c:url var="addUrl" value="/enrollment"/>
         <a href="${addUrl}"><spring:message code="prompt.add"/></a>
     </c:if>
 

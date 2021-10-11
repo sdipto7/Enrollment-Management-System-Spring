@@ -34,8 +34,7 @@
         </c:forEach>
     </table>
     <c:if test="${currentUser.role == 'ADMIN'}">
-        <c:url var="addUrl" value="/user">
-        </c:url>
+        <c:url var="addUrl" value="/user"/>
         <a href="${addUrl}"><spring:message code="prompt.add"/></a>
     </c:if>
 

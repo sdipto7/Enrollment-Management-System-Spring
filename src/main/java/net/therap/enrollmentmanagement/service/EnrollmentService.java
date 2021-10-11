@@ -33,7 +33,7 @@ public class EnrollmentService {
         enrollmentDao.saveOrUpdate(enrollment);
     }
 
-    public void delete(long id) {
-        enrollmentDao.delete(id);
+    public void delete(Enrollment enrollment) {
+        enrollmentDao.delete(enrollment);
     }
 }
