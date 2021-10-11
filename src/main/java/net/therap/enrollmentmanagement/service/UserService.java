@@ -42,7 +42,7 @@ public class UserService {
         userDao.saveOrUpdate(user);
     }
 
-    public void delete(long id) {
-        userDao.delete(id);
+    public void delete(User user) {
+        userDao.delete(user);
     }
 }

@@ -18,22 +18,25 @@ import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static net.therap.enrollmentmanagement.controller.CourseController.COURSE_CMD;
+
 /**
  * @author rumi.dipto
  * @since 9/9/21
  */
 @Controller
 @RequestMapping("/course")
+@SessionAttributes(COURSE_CMD)
 public class CourseController {
 
     @Autowired
     private CourseService courseService;
 
-    public static final String COURSE_CMD = "course";
-
     private static final String VIEW_PAGE = "courseList";
 
     private static final String SAVE_PAGE = "course";
+
+    public static final String COURSE_CMD = "course";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -43,44 +46,37 @@ public class CourseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String showList(@RequestParam Action action,
                            ModelMap model) {
+
         setupReferenceData(action, 0, model);
 
         return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam Action action,
+    public String show(@RequestParam(defaultValue = "SAVE") Action action,
                        @RequestParam(defaultValue = "0") long courseId,
-                       SessionStatus sessionStatus,
-                       RedirectAttributes redirectAttributes,
                        ModelMap model) {
 
-        switch (action) {
-            case UPDATE:
-                setupReferenceData(action, courseId, model);
-                return SAVE_PAGE;
-            case DELETE:
-                courseService.delete(courseId);
-                sessionStatus.setComplete();
-                setupSuccessData(redirectAttributes);
-                return "redirect:" + Url.DONE;
-            default:
-                break;
-        }
+        setupReferenceData(action, courseId, model);
 
-        return VIEW_PAGE;
+        return SAVE_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute Course course,
                           Errors errors,
+                          @RequestParam Action action,
                           SessionStatus sessionStatus,
                           RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
             return SAVE_PAGE;
         }
-        courseService.saveOrUpdate(course);
+        if (action.equals(Action.DELETE)) {
+            courseService.delete(course);
+        } else {
+            courseService.saveOrUpdate(course);
+        }
 
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
@@ -89,15 +85,10 @@ public class CourseController {
     }
 
     public void setupReferenceData(Action action, long courseId, ModelMap model) {
-        switch (action) {
-            case VIEW:
-                model.addAttribute("courseList", courseService.findAll());
-                break;
-            case UPDATE:
-                model.addAttribute("course", courseService.getOrCreateCourse(courseId));
-                break;
-            default:
-                break;
+        if (action.equals(Action.VIEW)) {
+            model.addAttribute("courseList", courseService.findAll());
+        } else {
+            model.addAttribute(COURSE_CMD, courseService.getOrCreateCourse(courseId));
         }
     }
 

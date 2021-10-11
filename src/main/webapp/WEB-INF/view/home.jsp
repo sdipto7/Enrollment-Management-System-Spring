@@ -11,7 +11,8 @@
     <title><spring:message code="home.title"/></title>
 </head>
 <body>
-    <h2><spring:message code="home.header"/>
+    <h2>
+        <spring:message code="home.header"/>
         <c:out value="${currentUser.name}"/>
     </h2>
 
@@ -24,12 +25,12 @@
     </c:url>
     <a href="${courseViewUrl}"><spring:message code="prompt.viewCourse"/></a>
 
-    <c:url var="userViewUrl" value="/user">
+    <c:url var="userViewUrl" value="/user/list">
         <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${userViewUrl}"><spring:message code="prompt.viewUser"/></a>
 
-    <c:url var="enrollmentViewUrl" value="/enrollment">
+    <c:url var="enrollmentViewUrl" value="/enrollment/list">
         <c:param name="action" value="VIEW"/>
     </c:url>
     <a href="${enrollmentViewUrl}"><spring:message code="prompt.viewEnrollment"/></a>

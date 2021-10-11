@@ -9,6 +9,13 @@
 <html>
 <head>
     <title><spring:message code="course.title.edit"/></title>
+    <script type="text/javascript">
+        function showAlert() {
+            if (!(confirm('Are you sure to delete the selected course ?'))) {
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
 <form:form action="/course" modelAttribute="course" method="post">
@@ -39,9 +46,16 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" name="action" value="<spring:message code="prompt.save"/>"/>
+                <button type="submit" name="action" value="SAVE"><spring:message code="prompt.save"/></button>
             </td>
         </tr>
+        <c:if test="${course.id != 0}">
+            <tr>
+                <td colspan="2">
+                    <button type="submit" name="action" value="DELETE" onclick="showAlert()"><spring:message code="prompt.delete"/></button>
+                </td>
+            </tr>
+        </c:if>
     </table>
 </form:form>
 <c:url var="logoutUrl" value="/logout"/>

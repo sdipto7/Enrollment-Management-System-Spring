@@ -59,7 +59,7 @@ public class EnrollmentController {
                        ModelMap model) {
 
         switch (action) {
-            case UPDATE:
+            case SAVE:
                 setupReferenceData(action, enrollmentId, model);
                 return SAVE_PAGE;
             case VIEW:
@@ -97,7 +97,7 @@ public class EnrollmentController {
             case VIEW:
                 model.addAttribute("enrollmentList", enrollmentService.findAll());
                 break;
-            case UPDATE:
+            case SAVE:
                 model.addAttribute("enrollment", enrollmentService.getOrCreateEnrollment(enrollmentId));
                 model.addAttribute("courseList", courseService.findAll());
                 model.addAttribute("userList", userService.findAll());

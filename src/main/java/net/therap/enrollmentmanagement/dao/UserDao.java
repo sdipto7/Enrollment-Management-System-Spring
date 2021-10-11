@@ -55,10 +55,9 @@ public class UserDao {
     }
 
     @Transactional
-    public void delete(long id) {
-        User user = em.getReference(User.class, id);
+    public void delete(User user) {
         if (Objects.nonNull(user)) {
-            em.remove(user);
+            em.remove(em.contains(user) ? user : em.merge(user));
         }
         em.flush();
     }

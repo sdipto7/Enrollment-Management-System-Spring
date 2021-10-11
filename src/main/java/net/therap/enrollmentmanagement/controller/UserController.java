@@ -3,6 +3,7 @@ package net.therap.enrollmentmanagement.controller;
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
+import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,77 +18,81 @@ import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static net.therap.enrollmentmanagement.controller.UserController.USER_CMD;
+
 /**
  * @author rumi.dipto
  * @since 9/10/21
  */
 @Controller
 @RequestMapping("/user")
+@SessionAttributes(USER_CMD)
 public class UserController {
 
     @Autowired
     private UserService userService;
+
     private static final String VIEW_PAGE = "userList";
+
     private static final String SAVE_PAGE = "user";
-    private static final String DONE_PAGE = "redirect:/home";
+
+    public static final String USER_CMD = "user";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String show(@RequestParam Action action,
-                       @RequestParam(defaultValue = "0") long userId,
-                       SessionStatus sessionStatus,
-                       RedirectAttributes redirectAttributes,
-                       ModelMap model) {
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String showList(@RequestParam Action action,
+                           ModelMap model) {
 
-        switch (action) {
-            case UPDATE:
-                setupReferenceData(action, userId, model);
-                return SAVE_PAGE;
-            case VIEW:
-                setupReferenceData(action, userId, model);
-                break;
-            case DELETE:
-                userService.delete(userId);
-                sessionStatus.setComplete();
-                redirectAttributes.addFlashAttribute("success", "User Successfully Deleted");
-                return DONE_PAGE;
-            default:
-                break;
-        }
+        setupReferenceData(action, 0, model);
 
         return VIEW_PAGE;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String show(@RequestParam(defaultValue = "SAVE") Action action,
+                       @RequestParam(defaultValue = "0") long userId,
+                       ModelMap model) {
+
+        setupReferenceData(action, userId, model);
+
+        return SAVE_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String process(@Valid @ModelAttribute User user,
                           Errors errors,
+                          @RequestParam Action action,
                           SessionStatus sessionStatus,
                           RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
             return SAVE_PAGE;
         }
-        userService.saveOrUpdate(user);
-        sessionStatus.setComplete();
-        redirectAttributes.addFlashAttribute("success", "User Successfully Saved");
+        if (action.equals(Action.DELETE)) {
+            userService.delete(user);
+        } else {
+            userService.saveOrUpdate(user);
+        }
 
-        return DONE_PAGE;
+        sessionStatus.setComplete();
+        setupSuccessData(redirectAttributes);
+
+        return "redirect:" + Url.DONE;
     }
 
     public void setupReferenceData(Action action, long userId, ModelMap model) {
-        switch (action) {
-            case VIEW:
-                model.addAttribute("userList", userService.findAll());
-                break;
-            case UPDATE:
-                model.addAttribute("user", userService.getOrCreateUser(userId));
-                break;
-            default:
-                break;
+        if (action.equals(Action.VIEW)) {
+            model.addAttribute("userList", userService.findAll());
+        } else {
+            model.addAttribute(USER_CMD, userService.getOrCreateUser(userId));
         }
+    }
+
+    public void setupSuccessData(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("success", "User Successfully Updated");
     }
 }

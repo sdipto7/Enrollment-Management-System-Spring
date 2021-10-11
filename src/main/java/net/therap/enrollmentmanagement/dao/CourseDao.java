@@ -47,10 +47,9 @@ public class CourseDao {
     }
 
     @Transactional
-    public void delete(long id) {
-        Course course = em.getReference(Course.class, id);
+    public void delete(Course course) {
         if (Objects.nonNull(course)) {
-            em.remove(course);
+            em.remove(em.contains(course) ? course : em.merge(course));
         }
         em.flush();
     }

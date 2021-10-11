@@ -37,7 +37,7 @@ public class CourseService {
         courseDao.saveOrUpdate(course);
     }
 
-    public void delete(long id) {
-        courseDao.delete(id);
+    public void delete(Course course) {
+        courseDao.delete(course);
     }
 }

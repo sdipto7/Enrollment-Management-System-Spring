@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public static String loginException(ModelMap model) {
+    public static String loginException(Exception exception, ModelMap model) {
         model.addAttribute("message", "Please try again later");
 
         return "error";
