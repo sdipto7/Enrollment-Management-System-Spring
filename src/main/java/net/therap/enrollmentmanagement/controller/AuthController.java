@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -16,41 +17,45 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Locale;
 import java.util.Objects;
+
+import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
 
 /**
  * @author rumi.dipto
  * @since 9/10/21
  */
 @Controller
-@SessionAttributes("currentUser")
+@SessionAttributes(AUTH_USER_CMD)
 public class AuthController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private UserService userService;
 
     private static final String LOGIN_PAGE = "login";
-
     private static final String HOME_PAGE = "home";
-
-    private static final String AUTH_USER_CMD = "currentUser";
+    public static final String AUTH_USER_CMD = "currentUser";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewLoginPage(ModelMap model) {
-        model.addAttribute("credential", new Credential());
+        setupReferenceData(model);
 
         return LOGIN_PAGE;
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session,
                          SessionStatus sessionStatus,
                          ModelMap model) {
         session.invalidate();
         sessionStatus.setComplete();
-        model.addAttribute("credential", new Credential());
+        setupReferenceData(model);
 
-        return LOGIN_PAGE;
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -58,8 +63,8 @@ public class AuthController {
                         Errors errors,
                         RedirectAttributes redirectAttributes,
                         ModelMap model) {
-        if (errors.hasErrors()) {
 
+        if (errors.hasErrors()) {
             return LOGIN_PAGE;
         }
 
@@ -68,8 +73,12 @@ public class AuthController {
             model.addAttribute(AUTH_USER_CMD, user);
             return HOME_PAGE;
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Wrong username or password");
+            redirectAttributes.addFlashAttribute("errorMessage", messageSource.getMessage("error.msg", null, Locale.ENGLISH));
             return "redirect:/";
         }
+    }
+
+    public void setupReferenceData(ModelMap model) {
+        model.addAttribute("credential", new Credential());
     }
 }
