@@ -6,6 +6,7 @@ import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.CourseController.COURSE_CMD;
 
@@ -30,12 +32,13 @@ import static net.therap.enrollmentmanagement.controller.CourseController.COURSE
 public class CourseController {
 
     @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
     private CourseService courseService;
 
-    private static final String VIEW_PAGE = "courseList";
-
-    private static final String SAVE_PAGE = "course";
-
+    private static final String LIST_VIEW_PAGE = "courseList";
+    private static final String VIEW_PAGE = "course";
     public static final String COURSE_CMD = "course";
 
     @InitBinder
@@ -49,7 +52,7 @@ public class CourseController {
 
         setupReferenceData(action, 0, model);
 
-        return VIEW_PAGE;
+        return LIST_VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -59,7 +62,7 @@ public class CourseController {
 
         setupReferenceData(action, courseId, model);
 
-        return SAVE_PAGE;
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -70,9 +73,10 @@ public class CourseController {
                           RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
-            return SAVE_PAGE;
+            return VIEW_PAGE;
         }
-        if (action.equals(Action.DELETE)) {
+
+        if (action == Action.DELETE) {
             courseService.delete(course);
         } else {
             courseService.saveOrUpdate(course);
@@ -81,11 +85,11 @@ public class CourseController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.DONE;
+        return "redirect:" + Url.DONE_URL;
     }
 
     public void setupReferenceData(Action action, long courseId, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
+        if (action == Action.VIEW) {
             model.addAttribute("courseList", courseService.findAll());
         } else {
             model.addAttribute(COURSE_CMD, courseService.getOrCreateCourse(courseId));
@@ -93,6 +97,7 @@ public class CourseController {
     }
 
     public void setupSuccessData(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("success", "Courses Successfully Updated");
+        redirectAttributes.addFlashAttribute("success",
+                messageSource.getMessage("course.success.msg", null, Locale.ENGLISH));
     }
 }

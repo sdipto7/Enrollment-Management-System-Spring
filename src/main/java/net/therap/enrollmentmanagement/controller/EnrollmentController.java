@@ -12,6 +12,7 @@ import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.EnrollmentController.ENROLLMENT_CMD;
 
@@ -36,6 +38,9 @@ import static net.therap.enrollmentmanagement.controller.EnrollmentController.EN
 public class EnrollmentController {
 
     @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
     private EnrollmentService enrollmentService;
 
     @Autowired
@@ -44,10 +49,8 @@ public class EnrollmentController {
     @Autowired
     private CourseService courseService;
 
-    private static final String VIEW_PAGE = "enrollmentList";
-
-    private static final String SAVE_PAGE = "enrollment";
-
+    private static final String LIST_VIEW_PAGE = "enrollmentList";
+    private static final String VIEW_PAGE = "enrollment";
     public static final String ENROLLMENT_CMD = "enrollment";
 
     @InitBinder
@@ -63,7 +66,7 @@ public class EnrollmentController {
 
         setupReferenceData(action, 0, model);
 
-        return VIEW_PAGE;
+        return LIST_VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -73,7 +76,7 @@ public class EnrollmentController {
 
         setupReferenceData(action, enrollmentId, model);
 
-        return SAVE_PAGE;
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -84,9 +87,10 @@ public class EnrollmentController {
                           RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
-            return SAVE_PAGE;
+            return VIEW_PAGE;
         }
-        if (action.equals(Action.DELETE)) {
+
+        if (action == Action.DELETE) {
             enrollmentService.delete(enrollment);
         } else {
             enrollmentService.saveOrUpdate(enrollment);
@@ -95,11 +99,11 @@ public class EnrollmentController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.DONE;
+        return "redirect:" + Url.DONE_URL;
     }
 
     public void setupReferenceData(Action action, long enrollmentId, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
+        if (action == Action.VIEW) {
             model.addAttribute("enrollmentList", enrollmentService.findAll());
         } else {
             model.addAttribute(ENROLLMENT_CMD, enrollmentService.getOrCreateEnrollment(enrollmentId));
@@ -109,6 +113,7 @@ public class EnrollmentController {
     }
 
     public void setupSuccessData(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("success", "Enrollments Successfully Updated");
+        redirectAttributes.addFlashAttribute("success",
+                messageSource.getMessage("enrollment.success.msg", null, Locale.ENGLISH));
     }
 }

@@ -22,8 +22,8 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="userName" />
-                    <form:errors path="userName" />
+                    <form:input path="userName"/>
+                    <form:errors path="userName"/>
                 </td>
             </tr>
             <tr>
@@ -33,12 +33,12 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="password" />
-                    <form:errors path="password" />
+                    <form:input path="password"/>
+                    <form:errors path="password"/>
                 </td>
             </tr>
         </table>
-        <input type="submit" value="<spring:message code="prompt.login"/>">
+        <button type="submit" value="LOGIN"><spring:message code="prompt.login"/></button>
     </form:form>
 </body>
 </html>

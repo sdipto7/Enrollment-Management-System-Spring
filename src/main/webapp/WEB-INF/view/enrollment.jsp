@@ -29,7 +29,7 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:select path = "user">
+                    <form:select path="user">
                         <form:options items="${userList}" itemValue="id" itemLabel="name"/>
                     </form:select>
                     <form:errors path="user" />
@@ -42,7 +42,7 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:select path = "course">
+                    <form:select path="course">
                         <form:options items="${courseList}" itemValue="id" itemLabel="courseCode"/>
                     </form:select>
                     <form:errors path="course" />

@@ -6,5 +6,5 @@ package net.therap.enrollmentmanagement.utils;
  */
 public interface Url {
 
-    String DONE = "/home";
+    String DONE_URL = "/home";
 }

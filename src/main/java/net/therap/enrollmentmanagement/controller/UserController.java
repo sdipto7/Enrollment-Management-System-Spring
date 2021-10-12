@@ -6,6 +6,7 @@ import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.UserController.USER_CMD;
 
@@ -30,12 +32,13 @@ import static net.therap.enrollmentmanagement.controller.UserController.USER_CMD
 public class UserController {
 
     @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
     private UserService userService;
 
-    private static final String VIEW_PAGE = "userList";
-
-    private static final String SAVE_PAGE = "user";
-
+    private static final String LIST_VIEW_PAGE = "userList";
+    private static final String VIEW_PAGE = "user";
     public static final String USER_CMD = "user";
 
     @InitBinder
@@ -49,7 +52,7 @@ public class UserController {
 
         setupReferenceData(action, 0, model);
 
-        return VIEW_PAGE;
+        return LIST_VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -59,7 +62,7 @@ public class UserController {
 
         setupReferenceData(action, userId, model);
 
-        return SAVE_PAGE;
+        return VIEW_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -70,9 +73,10 @@ public class UserController {
                           RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors()) {
-            return SAVE_PAGE;
+            return VIEW_PAGE;
         }
-        if (action.equals(Action.DELETE)) {
+
+        if (action == Action.DELETE) {
             userService.delete(user);
         } else {
             userService.saveOrUpdate(user);
@@ -81,11 +85,11 @@ public class UserController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.DONE;
+        return "redirect:" + Url.DONE_URL;
     }
 
     public void setupReferenceData(Action action, long userId, ModelMap model) {
-        if (action.equals(Action.VIEW)) {
+        if (action == Action.VIEW) {
             model.addAttribute("userList", userService.findAll());
         } else {
             model.addAttribute(USER_CMD, userService.getOrCreateUser(userId));
@@ -93,6 +97,7 @@ public class UserController {
     }
 
     public void setupSuccessData(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("success", "User Successfully Updated");
+        redirectAttributes.addFlashAttribute("success",
+                messageSource.getMessage("user.success.msg", null, Locale.ENGLISH));
     }
 }
