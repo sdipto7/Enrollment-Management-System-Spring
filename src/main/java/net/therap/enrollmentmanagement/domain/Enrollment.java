@@ -18,12 +18,12 @@ public class Enrollment extends Persistent implements Comparable<Enrollment> {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull(message = "{enrollment.user.notNull.msg}")
+    @NotNull(message = "{validation.notNull.user.msg}")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
-    @NotNull(message = "{enrollment.course.notNull.msg}")
+    @NotNull(message = "{validation.notNull.course.msg}")
     private Course course;
 
     public User getUser() {

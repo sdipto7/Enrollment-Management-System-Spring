@@ -23,7 +23,7 @@ public class User extends Persistent {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @NotNull(message = "{user.role.notNull.msg}")
+    @NotNull(message = "{validation.notNull.role.msg}")
     private Role role;
 
     @OneToOne(mappedBy = "user",

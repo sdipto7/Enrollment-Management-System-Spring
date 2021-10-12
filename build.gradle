@@ -23,9 +23,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.10.Final'
     implementation 'mysql:mysql-connector-java:8.0.26'
-    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '3.6.10.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '4.1.0.Final'
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'javax.servlet:jstl:1.2'
