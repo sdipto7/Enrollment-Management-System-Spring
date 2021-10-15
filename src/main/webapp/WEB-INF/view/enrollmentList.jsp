@@ -11,7 +11,7 @@
     <title><spring:message code="enrollmentList.title"/></title>
 </head>
 <body>
-    <table>
+    <table cellpadding="10px" border="1px">
         <tr>
             <th><spring:message code="user.label.name"/></th>
             <th><spring:message code="course.label.code"/></th>

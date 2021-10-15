@@ -1,6 +1,7 @@
 package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
+import net.therap.enrollmentmanagement.domain.Role;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -93,6 +95,7 @@ public class UserController {
             model.addAttribute("userList", userService.findAll());
         } else {
             model.addAttribute(USER_CMD, userService.getOrCreateUser(userId));
+            model.addAttribute("roleList", Arrays.asList(Role.values()));
         }
     }
 

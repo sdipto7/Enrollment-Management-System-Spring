@@ -21,7 +21,7 @@
     <form:form action="/user" modelAttribute="user" method="post">
         <form:hidden path="id"/>
         <form:hidden path="created"/>
-        <table>
+        <table cellpadding="10px">
             <tr>
                 <td>
                     <form:label path="name">
@@ -30,7 +30,7 @@
                 </td>
                 <td>
                     <form:input path="name" />
-                    <form:errors path="name"/>
+                    <form:errors path="name" cssStyle="color: red"/>
                 </td>
             </tr>
             <tr>
@@ -39,26 +39,11 @@
                         <spring:message code="user.label.role"/>
                     </form:label>
                 </td>
-            </tr>
-            <tr>
                 <td>
-                    <form:label path="role">
-                        <spring:message code="prompt.admin"/>
-                    </form:label>
-                    <form:radiobutton path="role" value="ADMIN"/>
+                    <form:radiobuttons path="role" items="${roleList}"/>
                 </td>
-            </tr>
-            <tr>
                 <td>
-                    <form:label path="role">
-                        <spring:message code="prompt.user"/>
-                    </form:label>
-                    <form:radiobutton path="role" value="USER"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <form:errors path="role"/>
+                    <form:errors path="role" cssStyle="color: red"/>
                 </td>
             </tr>
             <tr>
