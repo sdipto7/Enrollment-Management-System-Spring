@@ -13,6 +13,7 @@ import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -61,8 +62,12 @@ public class EnrollmentController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmerEditor);
+
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
+
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
     }
 
@@ -113,7 +118,7 @@ public class EnrollmentController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.HOME_URL;
+        return "redirect:" + Url.DONE_URL;
     }
 
     public void setupReferenceData(Action action, long enrollmentId, ModelMap model) {

@@ -6,5 +6,6 @@ package net.therap.enrollmentmanagement.utils;
  */
 public interface Url {
 
-    String HOME_URL = "/home";
+    String LOGIN_URL = "/login";
+    String DONE_URL = "/home";
 }

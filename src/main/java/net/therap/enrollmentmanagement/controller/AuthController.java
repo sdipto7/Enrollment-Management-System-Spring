@@ -6,17 +6,17 @@ import net.therap.enrollmentmanagement.helper.AuthChecker;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Locale;
@@ -42,10 +42,22 @@ public class AuthController {
     private UserService userService;
 
     private static final String LOGIN_PAGE = "login";
+    private static final String HOME_PAGE = "home";
     public static final String AUTH_USER_CMD = "currentUser";
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String viewLoginPage(ModelMap model) {
+    public String viewLoginPage() {
+        return "redirect:" + Url.LOGIN_URL;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(ModelMap model) {
         setupReferenceData(model);
 
         return LOGIN_PAGE;
@@ -53,14 +65,18 @@ public class AuthController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session,
-                         SessionStatus sessionStatus,
-                         ModelMap model) {
+                         HttpServletResponse response,
+                         SessionStatus sessionStatus) {
 
+        session.removeAttribute(AUTH_USER_CMD);
         session.invalidate();
         sessionStatus.setComplete();
-        setupReferenceData(model);
 
-        return "redirect:/";
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        return "redirect:" + Url.LOGIN_URL;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -76,10 +92,10 @@ public class AuthController {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user) && authChecker.check(user, credential.getPassword())) {
             model.addAttribute(AUTH_USER_CMD, user);
-            return "redirect:" + Url.HOME_URL;
+            return HOME_PAGE;
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", messageSource.getMessage("error.msg", null, Locale.ENGLISH));
-            return "redirect:/";
+            return "redirect:" + Url.LOGIN_URL;
         }
     }
 
