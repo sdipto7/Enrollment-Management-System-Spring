@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author rumi.dipto
  * @since 10/6/21
  */
-public class AuthFilter implements Filter {
+public class SessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

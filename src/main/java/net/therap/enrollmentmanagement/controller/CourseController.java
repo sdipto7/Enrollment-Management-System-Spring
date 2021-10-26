@@ -2,6 +2,8 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Action;
 import net.therap.enrollmentmanagement.domain.Course;
+import net.therap.enrollmentmanagement.domain.User;
+import net.therap.enrollmentmanagement.helper.AccessChecker;
 import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
 import static net.therap.enrollmentmanagement.controller.CourseController.COURSE_CMD;
 
 /**
@@ -35,6 +39,9 @@ public class CourseController {
     private MessageSource messageSource;
 
     @Autowired
+    private AccessChecker accessChecker;
+
+    @Autowired
     private CourseService courseService;
 
     private static final String LIST_VIEW_PAGE = "courseList";
@@ -48,7 +55,11 @@ public class CourseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String showList(@RequestParam Action action,
+                           HttpSession session,
                            ModelMap model) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, 0, model);
 
@@ -58,7 +69,11 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam(defaultValue = "SAVE") Action action,
                        @RequestParam(defaultValue = "0") long courseId,
+                       HttpSession session,
                        ModelMap model) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, courseId, model);
 
@@ -70,7 +85,11 @@ public class CourseController {
                           Errors errors,
                           @RequestParam Action action,
                           SessionStatus sessionStatus,
+                          HttpSession session,
                           RedirectAttributes redirectAttributes) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkEditAccess(sessionUser);
 
         if (errors.hasErrors()) {
             return VIEW_PAGE;

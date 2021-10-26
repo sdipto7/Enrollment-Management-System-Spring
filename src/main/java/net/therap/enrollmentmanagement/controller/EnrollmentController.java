@@ -6,6 +6,7 @@ import net.therap.enrollmentmanagement.domain.Enrollment;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.editor.CourseEditor;
 import net.therap.enrollmentmanagement.editor.UserEditor;
+import net.therap.enrollmentmanagement.helper.AccessChecker;
 import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.service.UserService;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
 import static net.therap.enrollmentmanagement.controller.EnrollmentController.ENROLLMENT_CMD;
 
 /**
@@ -39,6 +42,9 @@ public class EnrollmentController {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private AccessChecker accessChecker;
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -62,7 +68,11 @@ public class EnrollmentController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String showList(@RequestParam Action action,
+                           HttpSession session,
                            ModelMap model) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, 0, model);
 
@@ -72,7 +82,11 @@ public class EnrollmentController {
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam(defaultValue = "SAVE") Action action,
                        @RequestParam(defaultValue = "0") long enrollmentId,
+                       HttpSession session,
                        ModelMap model) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, enrollmentId, model);
 
@@ -84,7 +98,11 @@ public class EnrollmentController {
                           Errors errors,
                           @RequestParam Action action,
                           SessionStatus sessionStatus,
+                          HttpSession session,
                           RedirectAttributes redirectAttributes) {
+
+        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
+        accessChecker.checkEditAccess(sessionUser);
 
         if (errors.hasErrors()) {
             return VIEW_PAGE;
