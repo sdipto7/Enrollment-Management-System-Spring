@@ -26,7 +26,10 @@ public class CourseDao {
     public Course findByCourseCode(String courseCode) {
         return em.createQuery("FROM Course c WHERE c.courseCode = :code", Course.class)
                 .setParameter("code", courseCode)
-                .getSingleResult();
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Course> findAll() {

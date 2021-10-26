@@ -25,16 +25,21 @@ public class UserDao {
     }
 
     public User findByCredential(Credential credential) {
-        return em.createQuery("FROM User u WHERE u.credential.userName = :userName AND u.credential.password = :password", User.class)
+        return em.createQuery("FROM User u WHERE u.credential.userName = :userName", User.class)
                 .setParameter("userName", credential.getUserName())
-                .setParameter("password", credential.getPassword())
-                .getSingleResult();
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     public User findByName(String name) {
         return em.createQuery("FROM User u WHERE u.name = :name", User.class)
                 .setParameter("name", name)
-                .getSingleResult();
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     public List<User> findAll() {

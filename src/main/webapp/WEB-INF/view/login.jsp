@@ -33,7 +33,7 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="password"/>
+                    <form:password path="password"/>
                     <form:errors path="password"/>
                 </td>
             </tr>

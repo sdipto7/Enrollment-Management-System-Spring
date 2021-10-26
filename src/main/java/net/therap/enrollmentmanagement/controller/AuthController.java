@@ -2,6 +2,7 @@ package net.therap.enrollmentmanagement.controller;
 
 import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
+import net.therap.enrollmentmanagement.helper.AuthChecker;
 import net.therap.enrollmentmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -32,6 +33,9 @@ public class AuthController {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private AuthChecker authChecker;
 
     @Autowired
     private UserService userService;
@@ -69,7 +73,7 @@ public class AuthController {
         }
 
         User user = userService.findByCredential(credential);
-        if (Objects.nonNull(user)) {
+        if (Objects.nonNull(user) && authChecker.check(user, credential.getPassword())) {
             model.addAttribute(AUTH_USER_CMD, user);
             return HOME_PAGE;
         } else {
