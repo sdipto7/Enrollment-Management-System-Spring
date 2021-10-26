@@ -4,6 +4,7 @@ import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.helper.AuthChecker;
 import net.therap.enrollmentmanagement.service.UserService;
+import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,6 @@ public class AuthController {
     private UserService userService;
 
     private static final String LOGIN_PAGE = "login";
-    private static final String HOME_PAGE = "home";
     public static final String AUTH_USER_CMD = "currentUser";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -55,6 +55,7 @@ public class AuthController {
     public String logout(HttpSession session,
                          SessionStatus sessionStatus,
                          ModelMap model) {
+
         session.invalidate();
         sessionStatus.setComplete();
         setupReferenceData(model);
@@ -75,7 +76,7 @@ public class AuthController {
         User user = userService.findByCredential(credential);
         if (Objects.nonNull(user) && authChecker.check(user, credential.getPassword())) {
             model.addAttribute(AUTH_USER_CMD, user);
-            return HOME_PAGE;
+            return "redirect:" + Url.HOME_URL;
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", messageSource.getMessage("error.msg", null, Locale.ENGLISH));
             return "redirect:/";

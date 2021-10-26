@@ -101,7 +101,7 @@ public class UserController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.DONE_URL;
+        return "redirect:" + Url.HOME_URL;
     }
 
     public void setupReferenceData(Action action, long userId, ModelMap model) {

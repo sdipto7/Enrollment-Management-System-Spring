@@ -113,7 +113,7 @@ public class EnrollmentController {
         sessionStatus.setComplete();
         setupSuccessData(redirectAttributes);
 
-        return "redirect:" + Url.DONE_URL;
+        return "redirect:" + Url.HOME_URL;
     }
 
     public void setupReferenceData(Action action, long enrollmentId, ModelMap model) {
