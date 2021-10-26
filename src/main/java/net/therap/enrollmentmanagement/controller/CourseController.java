@@ -55,11 +55,7 @@ public class CourseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String showList(@RequestParam Action action,
-                           HttpSession session,
                            ModelMap model) {
-
-        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, 0, model);
 
@@ -73,7 +69,7 @@ public class CourseController {
                        ModelMap model) {
 
         User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkViewAccess(sessionUser);
+        accessChecker.checkAdminAccess(sessionUser);
 
         setupReferenceData(action, courseId, model);
 
@@ -89,7 +85,7 @@ public class CourseController {
                           RedirectAttributes redirectAttributes) {
 
         User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkEditAccess(sessionUser);
+        accessChecker.checkAdminAccess(sessionUser);
 
         if (errors.hasErrors()) {
             return VIEW_PAGE;

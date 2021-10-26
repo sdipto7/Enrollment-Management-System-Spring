@@ -13,14 +13,8 @@ import javax.xml.ws.WebServiceException;
 @Component
 public class AccessChecker {
 
-    public void checkEditAccess(User user) {
+    public void checkAdminAccess(User user) {
         if (!Role.ADMIN.equals(user.getRole())) {
-            throw new WebServiceException();
-        }
-    }
-
-    public void checkViewAccess(User user) {
-        if (!Role.USER.equals(user.getRole()) || !Role.ADMIN.equals(user.getRole())) {
             throw new WebServiceException();
         }
     }

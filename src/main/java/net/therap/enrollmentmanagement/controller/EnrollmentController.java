@@ -68,11 +68,7 @@ public class EnrollmentController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String showList(@RequestParam Action action,
-                           HttpSession session,
                            ModelMap model) {
-
-        User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkViewAccess(sessionUser);
 
         setupReferenceData(action, 0, model);
 
@@ -86,7 +82,7 @@ public class EnrollmentController {
                        ModelMap model) {
 
         User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkViewAccess(sessionUser);
+        accessChecker.checkAdminAccess(sessionUser);
 
         setupReferenceData(action, enrollmentId, model);
 
@@ -102,7 +98,7 @@ public class EnrollmentController {
                           RedirectAttributes redirectAttributes) {
 
         User sessionUser = (User) session.getAttribute(AUTH_USER_CMD);
-        accessChecker.checkEditAccess(sessionUser);
+        accessChecker.checkAdminAccess(sessionUser);
 
         if (errors.hasErrors()) {
             return VIEW_PAGE;
