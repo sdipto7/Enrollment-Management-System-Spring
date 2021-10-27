@@ -60,16 +60,6 @@ public class User extends Persistent {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (Objects.isNull(object) || !(object instanceof User)) {
-            return false;
-        }
-        User that = (User) object;
-
-        return this.getId() == that.getId();
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hashCode(getName());
     }

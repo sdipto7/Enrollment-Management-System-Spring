@@ -3,6 +3,7 @@ package net.therap.enrollmentmanagement.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author rumi.dipto
@@ -26,7 +27,7 @@ public class Persistent implements Serializable {
 
     @PrePersist
     private void onCreate() {
-        updated = created = new Date();
+        created = new Date();
     }
 
     @PreUpdate
@@ -60,5 +61,19 @@ public class Persistent implements Serializable {
 
     public boolean isNew() {
         return getId() == 0;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (Objects.isNull(object) || !(object instanceof Persistent)) {
+            return false;
+        }
+        Persistent that = (Persistent) object;
+
+        return this.getId() == that.getId();
     }
 }
