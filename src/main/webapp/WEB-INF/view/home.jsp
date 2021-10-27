@@ -35,6 +35,11 @@
     </c:url>
     <a href="${enrollmentViewUrl}"><spring:message code="prompt.viewEnrollment"/></a>
 
+    <c:url var="updatePasswordUrl" value="/user/updatePassword">
+        <c:param name="id" value="${currentUser.getId()}"/>
+    </c:url>
+    <a href="${updatePasswordUrl}"><spring:message code="prompt.changePassword"/></a>
+
     <c:url var="logoutUrl" value="/logout"/>
     <a href="${logoutUrl}"><spring:message code="prompt.logout"/></a>
 </body>

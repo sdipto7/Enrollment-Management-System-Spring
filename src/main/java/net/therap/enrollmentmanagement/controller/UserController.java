@@ -49,6 +49,7 @@ public class UserController {
 
     private static final String LIST_VIEW_PAGE = "userList";
     private static final String VIEW_PAGE = "user";
+    private static final String PROFILE_PAGE = "profile";
     public static final String USER_CMD = "user";
     public static final String USER_LIST = "userList";
     public static final String ROLE_LIST = "roleList";
@@ -70,6 +71,16 @@ public class UserController {
         return LIST_VIEW_PAGE;
     }
 
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
+    public String show(@RequestParam long id,
+                       ModelMap model) {
+
+        User sessionUser = userService.find(id);
+        model.addAttribute(USER_CMD, sessionUser);
+
+        return PROFILE_PAGE;
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public String show(@RequestParam(defaultValue = "SAVE") Action action,
                        @RequestParam(defaultValue = "0") long userId,
@@ -82,6 +93,23 @@ public class UserController {
         setupReferenceData(action, userId, model);
 
         return VIEW_PAGE;
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public String process(@Valid @ModelAttribute User user,
+                          Errors errors,
+                          SessionStatus sessionStatus,
+                          RedirectAttributes redirectAttributes) {
+
+        if (errors.hasErrors()) {
+            return PROFILE_PAGE;
+        }
+        userService.saveOrUpdate(user);
+
+        sessionStatus.setComplete();
+        setupSuccessData(redirectAttributes);
+
+        return "redirect:" + Url.DONE_URL;
     }
 
     @RequestMapping(method = RequestMethod.POST)
