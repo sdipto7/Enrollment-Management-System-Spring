@@ -6,6 +6,7 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.helper.AccessChecker;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
+import net.therap.enrollmentmanagement.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
@@ -41,6 +42,9 @@ public class UserController {
     private AccessChecker accessChecker;
 
     @Autowired
+    private UserValidator userValidator;
+
+    @Autowired
     private UserService userService;
 
     private static final String LIST_VIEW_PAGE = "userList";
@@ -49,10 +53,12 @@ public class UserController {
     public static final String USER_LIST = "userList";
     public static final String ROLE_LIST = "roleList";
 
-    @InitBinder
+    @InitBinder(USER_CMD)
     public void initBinder(WebDataBinder binder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         binder.registerCustomEditor(String.class, stringTrimmerEditor);
+
+        binder.addValidators(userValidator);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

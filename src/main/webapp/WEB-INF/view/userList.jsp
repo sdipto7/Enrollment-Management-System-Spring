@@ -14,6 +14,7 @@
     <table cellpadding="10px" border="1px">
         <tr>
             <th><spring:message code="user.label.name"/></th>
+            <th><spring:message code="user.label.userName"/></th>
             <c:if test="${currentUser.role == 'ADMIN'}">
                 <th><spring:message code="user.label.role"/></th>
             </c:if>
@@ -24,6 +25,7 @@
             </c:url>
             <tr>
                 <td><c:out value="${user.name}"/></td>
+                <td><c:out value="${user.userName}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td><c:out value="${user.role}"/></td>
                     <td>

@@ -1,6 +1,5 @@
 package net.therap.enrollmentmanagement.dao;
 
-import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +23,9 @@ public class UserDao {
         return em.find(User.class, id);
     }
 
-    public User findByCredential(Credential credential) {
-        return em.createQuery("FROM User u WHERE u.credential.userName = :userName", User.class)
-                .setParameter("userName", credential.getUserName())
+    public User findByUserName(String userName) {
+        return em.createQuery("FROM User u WHERE u.userName = :userName", User.class)
+                .setParameter("userName", userName)
                 .getResultList()
                 .stream()
                 .findFirst()

@@ -26,10 +26,15 @@ public class User extends Persistent {
     @NotNull(message = "{validation.notNull.role.msg}")
     private Role role;
 
-    @OneToOne(mappedBy = "user",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE)
-    private Credential credential;
+    @Column(name = "user_name")
+    @Size(min = 2, max = 100, message = "{validation.length.msg}")
+    @NotNull(message = "{validation.notNull.msg}")
+    private String userName;
+
+    @Column(name = "password")
+    @Size(min = 2, max = 45, message = "{validation.length.msg}")
+    @NotNull(message = "{validation.notNull.msg}")
+    private String password;
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.REMOVE)
@@ -47,16 +52,24 @@ public class User extends Persistent {
         return role;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public Credential getCredential() {
-        return credential;
-    }
-
-    public void setCredential(Credential credential) {
-        this.credential = credential;
     }
 
     @Override

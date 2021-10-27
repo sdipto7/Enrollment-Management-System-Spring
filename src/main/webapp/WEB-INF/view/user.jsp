@@ -28,7 +28,7 @@
                     </form:label>
                 </td>
                 <td>
-                    <form:input path="name" />
+                    <form:input path="name"/>
                     <form:errors path="name" cssStyle="color: red"/>
                 </td>
             </tr>
@@ -45,6 +45,30 @@
                     <form:errors path="role" cssStyle="color: red"/>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <form:label path="userName">
+                        <spring:message code="user.label.userName"/>
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="userName"/>
+                    <form:errors path="userName" cssStyle="color: red"/>
+                </td>
+            </tr>
+            <c:if test="${user.id == 0}">
+                <tr>
+                    <td>
+                        <form:label path="password">
+                            <spring:message code="user.label.password"/>
+                        </form:label>
+                    </td>
+                    <td>
+                        <form:password path="password"/>
+                        <form:errors path="password" cssStyle="color: red"/>
+                    </td>
+                </tr>
+            </c:if>
             <tr>
                 <td colspan="2">
                     <button type="submit" name="action" value="SAVE"><spring:message code="prompt.save"/></button>

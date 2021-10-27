@@ -13,7 +13,7 @@
 </head>
 <body>
     <h2><c:out value="${errorMessage}"/> </h2>
-    <form:form action="login" method="post" commandName="credential">
+    <form:form action="login" method="post" commandName="credentialCommand">
         <table>
             <tr>
                 <td>

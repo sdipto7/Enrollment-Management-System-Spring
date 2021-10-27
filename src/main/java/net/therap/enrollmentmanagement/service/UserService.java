@@ -1,7 +1,6 @@
 package net.therap.enrollmentmanagement.service;
 
 import net.therap.enrollmentmanagement.dao.UserDao;
-import net.therap.enrollmentmanagement.domain.Credential;
 import net.therap.enrollmentmanagement.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,8 @@ public class UserService {
         return userDao.find(id);
     }
 
-    public User findByCredential(Credential credential) {
-        return userDao.findByCredential(credential);
+    public User findByUserName(String userName) {
+        return userDao.findByUserName(userName);
     }
 
     public User findByName(String name) {

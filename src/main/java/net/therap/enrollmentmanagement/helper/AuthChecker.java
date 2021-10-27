@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 public class AuthChecker {
 
     public Boolean check(User user, String password) {
-        return password.equals(user.getCredential().getPassword());
+        return password.equals(user.getPassword());
     }
 }

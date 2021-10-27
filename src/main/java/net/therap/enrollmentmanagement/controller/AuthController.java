@@ -1,6 +1,6 @@
 package net.therap.enrollmentmanagement.controller;
 
-import net.therap.enrollmentmanagement.domain.Credential;
+import net.therap.enrollmentmanagement.command.CredentialCommand;
 import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.helper.AuthChecker;
 import net.therap.enrollmentmanagement.service.UserService;
@@ -80,7 +80,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@Valid @ModelAttribute Credential credential,
+    public String login(@Valid @ModelAttribute CredentialCommand credentialCommand,
                         Errors errors,
                         RedirectAttributes redirectAttributes,
                         ModelMap model) {
@@ -89,8 +89,8 @@ public class AuthController {
             return LOGIN_PAGE;
         }
 
-        User user = userService.findByCredential(credential);
-        if (Objects.nonNull(user) && authChecker.check(user, credential.getPassword())) {
+        User user = userService.findByUserName(credentialCommand.getUserName());
+        if (Objects.nonNull(user) && authChecker.check(user, credentialCommand.getPassword())) {
             model.addAttribute(AUTH_USER_CMD, user);
             return HOME_PAGE;
         } else {
@@ -100,6 +100,6 @@ public class AuthController {
     }
 
     public void setupReferenceData(ModelMap model) {
-        model.addAttribute("credential", new Credential());
+        model.addAttribute("credentialCommand", new CredentialCommand());
     }
 }
