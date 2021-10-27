@@ -7,7 +7,6 @@ import net.therap.enrollmentmanagement.helper.AccessChecker;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -20,13 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
-import static net.therap.enrollmentmanagement.controller.UserController.USER_CMD;
+import static net.therap.enrollmentmanagement.controller.UserController.*;
 
 /**
  * @author rumi.dipto
@@ -34,7 +31,7 @@ import static net.therap.enrollmentmanagement.controller.UserController.USER_CMD
  */
 @Controller
 @RequestMapping("/user")
-@SessionAttributes(USER_CMD)
+@SessionAttributes({USER_CMD, USER_LIST, ROLE_LIST})
 public class UserController {
 
     @Autowired
@@ -49,13 +46,13 @@ public class UserController {
     private static final String LIST_VIEW_PAGE = "userList";
     private static final String VIEW_PAGE = "user";
     public static final String USER_CMD = "user";
+    public static final String USER_LIST = "userList";
+    public static final String ROLE_LIST = "roleList";
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         binder.registerCustomEditor(String.class, stringTrimmerEditor);
-
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -110,10 +107,10 @@ public class UserController {
 
     public void setupReferenceData(Action action, long userId, ModelMap model) {
         if (action == Action.VIEW) {
-            model.addAttribute("userList", userService.findAll());
+            model.addAttribute(USER_LIST, userService.findAll());
         } else {
             model.addAttribute(USER_CMD, userService.getOrCreateUser(userId));
-            model.addAttribute("roleList", Arrays.asList(Role.values()));
+            model.addAttribute(ROLE_LIST, Arrays.asList(Role.values()));
         }
     }
 

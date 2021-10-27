@@ -25,6 +25,10 @@ public class CourseService {
         return courseDao.findByCourseCode(courseCode);
     }
 
+    public Course findByCourseTitle(String courseTitle) {
+        return courseDao.findByCourseTitle(courseTitle);
+    }
+
     public List<Course> findAll() {
         return courseDao.findAll();
     }

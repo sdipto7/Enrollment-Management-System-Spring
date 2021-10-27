@@ -27,7 +27,7 @@
                 <td><c:out value="${enrollment.course.courseTitle}"/></td>
                 <c:if test="${currentUser.role == 'ADMIN'}">
                     <td>
-                        <a href="${editUrl}"><spring:message code="prompt.update"/></a>
+                        <a href="${editUrl}"><spring:message code="prompt.edit"/></a>
                     </td>
                 </c:if>
             </tr>

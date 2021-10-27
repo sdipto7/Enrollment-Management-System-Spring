@@ -23,6 +23,16 @@ public class EnrollmentDao {
         return em.find(Enrollment.class, id);
     }
 
+    public Enrollment findByUserAndCourse(long userId, long courseId) {
+        return em.createQuery("FROM Enrollment e WHERE e.user.id = :userId AND e.course.id = :courseId", Enrollment.class)
+                .setParameter("userId", userId)
+                .setParameter("courseId", courseId)
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Enrollment> findAll() {
         return em.createQuery("FROM Enrollment")
                 .getResultList();

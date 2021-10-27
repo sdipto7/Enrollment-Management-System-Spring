@@ -32,6 +32,15 @@ public class CourseDao {
                 .orElse(null);
     }
 
+    public Course findByCourseTitle(String courseTitle) {
+        return em.createQuery("FROM Course c WHERE c.courseTitle = :title", Course.class)
+                .setParameter("title", courseTitle)
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Course> findAll() {
         return em.createQuery("FROM Course")
                 .getResultList();

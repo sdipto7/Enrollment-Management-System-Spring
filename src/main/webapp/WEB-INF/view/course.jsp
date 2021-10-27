@@ -20,7 +20,6 @@
 <body>
 <form:form action="/course" modelAttribute="course" method="post">
     <form:hidden path="id"/>
-    <form:hidden path="created"/>
     <table>
         <tr>
             <td>
@@ -30,7 +29,7 @@
             </td>
             <td>
                 <form:input path="courseCode"/>
-                <form:errors path="courseCode"/>
+                <form:errors path="courseCode" cssStyle="color: red"/>
             </td>
         </tr>
         <tr>
@@ -41,7 +40,7 @@
             </td>
             <td>
                 <form:input path="courseTitle"/>
-                <form:errors path="courseTitle"/>
+                <form:errors path="courseTitle" cssStyle="color: red"/>
             </td>
         </tr>
         <tr>

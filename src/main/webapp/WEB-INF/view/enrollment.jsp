@@ -20,7 +20,6 @@
 <body>
     <form:form action="/enrollment" modelAttribute="enrollment" method="post">
         <form:hidden path="id"/>
-        <form:hidden path="created"/>
         <table>
             <tr>
                 <td>
@@ -32,7 +31,7 @@
                     <form:select path="user">
                         <form:options items="${userList}" itemValue="id" itemLabel="name"/>
                     </form:select>
-                    <form:errors path="user" />
+                    <form:errors path="user" cssStyle="color: red"/>
                 </td>
             </tr>
             <tr>
@@ -45,7 +44,7 @@
                     <form:select path="course">
                         <form:options items="${courseList}" itemValue="id" itemLabel="courseCode"/>
                     </form:select>
-                    <form:errors path="course" />
+                    <form:errors path="course" cssStyle="color: red"/>
                 </td>
             </tr>
             <tr>

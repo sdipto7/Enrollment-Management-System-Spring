@@ -11,8 +11,8 @@ import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.service.EnrollmentService;
 import net.therap.enrollmentmanagement.service.UserService;
 import net.therap.enrollmentmanagement.utils.Url;
+import net.therap.enrollmentmanagement.validator.EnrollmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -25,12 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
-import static net.therap.enrollmentmanagement.controller.EnrollmentController.ENROLLMENT_CMD;
+import static net.therap.enrollmentmanagement.controller.EnrollmentController.*;
 
 /**
  * @author rumi.dipto
@@ -38,7 +36,7 @@ import static net.therap.enrollmentmanagement.controller.EnrollmentController.EN
  */
 @Controller
 @RequestMapping("/enrollment")
-@SessionAttributes(ENROLLMENT_CMD)
+@SessionAttributes({ENROLLMENT_CMD, ENROLLMENT_LIST, COURSE_LIST, USER_LIST})
 public class EnrollmentController {
 
     @Autowired
@@ -46,6 +44,9 @@ public class EnrollmentController {
 
     @Autowired
     private AccessChecker accessChecker;
+
+    @Autowired
+    private EnrollmentValidator enrollmentValidator;
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -59,16 +60,18 @@ public class EnrollmentController {
     private static final String LIST_VIEW_PAGE = "enrollmentList";
     private static final String VIEW_PAGE = "enrollment";
     public static final String ENROLLMENT_CMD = "enrollment";
+    public static final String ENROLLMENT_LIST = "enrollmentList";
+    public static final String COURSE_LIST = "courseList";
+    public static final String USER_LIST = "userList";
 
-    @InitBinder
+    @InitBinder(ENROLLMENT_CMD)
     public void initBinder(WebDataBinder binder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         binder.registerCustomEditor(String.class, stringTrimmerEditor);
 
         binder.registerCustomEditor(User.class, new UserEditor());
         binder.registerCustomEditor(Course.class, new CourseEditor());
-
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
+        binder.addValidators(enrollmentValidator);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -123,11 +126,11 @@ public class EnrollmentController {
 
     public void setupReferenceData(Action action, long enrollmentId, ModelMap model) {
         if (action == Action.VIEW) {
-            model.addAttribute("enrollmentList", enrollmentService.findAll());
+            model.addAttribute(ENROLLMENT_LIST, enrollmentService.findAll());
         } else {
             model.addAttribute(ENROLLMENT_CMD, enrollmentService.getOrCreateEnrollment(enrollmentId));
-            model.addAttribute("courseList", courseService.findAll());
-            model.addAttribute("userList", userService.findAll());
+            model.addAttribute(COURSE_LIST, courseService.findAll());
+            model.addAttribute(USER_LIST, userService.findAll());
         }
     }
 

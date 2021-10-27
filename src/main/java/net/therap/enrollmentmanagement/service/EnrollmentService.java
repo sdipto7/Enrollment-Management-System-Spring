@@ -21,6 +21,10 @@ public class EnrollmentService {
         return enrollmentDao.find(id);
     }
 
+    public Enrollment findByUserAndCourse(long userId, long courseId) {
+        return enrollmentDao.findByUserAndCourse(userId, courseId);
+    }
+
     public List<Enrollment> findAll() {
         return enrollmentDao.findAll();
     }

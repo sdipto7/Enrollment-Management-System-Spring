@@ -6,8 +6,8 @@ import net.therap.enrollmentmanagement.domain.User;
 import net.therap.enrollmentmanagement.helper.AccessChecker;
 import net.therap.enrollmentmanagement.service.CourseService;
 import net.therap.enrollmentmanagement.utils.Url;
+import net.therap.enrollmentmanagement.validator.CourseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import static net.therap.enrollmentmanagement.controller.AuthController.AUTH_USER_CMD;
 import static net.therap.enrollmentmanagement.controller.CourseController.COURSE_CMD;
+import static net.therap.enrollmentmanagement.controller.CourseController.COURSE_LIST;
 
 /**
  * @author rumi.dipto
@@ -33,7 +32,7 @@ import static net.therap.enrollmentmanagement.controller.CourseController.COURSE
  */
 @Controller
 @RequestMapping("/course")
-@SessionAttributes(COURSE_CMD)
+@SessionAttributes({COURSE_CMD, COURSE_LIST})
 public class CourseController {
 
     @Autowired
@@ -43,18 +42,22 @@ public class CourseController {
     private AccessChecker accessChecker;
 
     @Autowired
+    private CourseValidator courseValidator;
+
+    @Autowired
     private CourseService courseService;
 
     private static final String LIST_VIEW_PAGE = "courseList";
     private static final String VIEW_PAGE = "course";
     public static final String COURSE_CMD = "course";
+    public static final String COURSE_LIST = "courseList";
 
-    @InitBinder
+    @InitBinder(COURSE_CMD)
     public void initBinder(WebDataBinder binder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         binder.registerCustomEditor(String.class, stringTrimmerEditor);
 
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"), true));
+        binder.addValidators(courseValidator);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -109,7 +112,7 @@ public class CourseController {
 
     public void setupReferenceData(Action action, long courseId, ModelMap model) {
         if (action == Action.VIEW) {
-            model.addAttribute("courseList", courseService.findAll());
+            model.addAttribute(COURSE_LIST, courseService.findAll());
         } else {
             model.addAttribute(COURSE_CMD, courseService.getOrCreateCourse(courseId));
         }

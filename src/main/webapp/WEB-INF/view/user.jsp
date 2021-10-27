@@ -20,7 +20,6 @@
 <body>
     <form:form action="/user" modelAttribute="user" method="post">
         <form:hidden path="id"/>
-        <form:hidden path="created"/>
         <table cellpadding="10px">
             <tr>
                 <td>
