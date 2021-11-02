@@ -5,11 +5,11 @@ This is the continuation of my previous course-user management projects.
 
 Required:
 
-gradle-5.6.4 - to run the project through terminal/command-prompt.
+- gradle-5.6.4 - Intellij Idea has built in gradle, still download this gradle version to run the project through terminal/command-prompt.
 
-mysql-8.0.27 - to manage DB. ddl.sql file is in db_migration folder and other db informations are in persistence.xml file. 
+- mysql-8.0.27 - to manage DB. ddl.sql file is in db_migration folder and other db informations are in persistence.xml file. 
 
-Gradle commands:
+Gradle commands to run Embedded-Tomcat-Server:
 
 - gradle clean build
 
