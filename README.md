@@ -11,6 +11,6 @@ mysql-8.0.27 - to manage DB. ddl.sql file is in db_migration folder and other db
 
 Gradle commands:
 
-gradle clean build
+- gradle clean build
 
-gradle tomcatRun
+- gradle tomcatRun
